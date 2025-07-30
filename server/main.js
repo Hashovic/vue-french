@@ -21,13 +21,13 @@ app.get('/api/all/:verb', async (req, res) => {
     const { fp } = req.query;
 
     const forms = await getAllForms(verb, +fp);
-    res.json(forms);
+
+    forms[2].verb ? res.json(forms) : res.status(404).json({ error: 'Verb Does Not Exist'});
 });
 
 
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).send('Something broke!');
+  res.status(500).json({error: 'Something broke on our end!'});
 });
 
 app.listen(PORT, () => {
