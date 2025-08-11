@@ -1,12 +1,6 @@
 <template>
   <p>This is the game home page</p>
-  <form>
-    <input
-      type="text"
-      placeholder="Enter a verb to conjugate"
-      class="border-2 border-gray-300 p-2 rounded w-full"
-      v-model="search">
-  </form>
+  <GameForm />
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 mt-4">
     <Checkbox
         v-for="(item, i) in items"
@@ -32,12 +26,13 @@
 </template>
 <script setup>
     import { ref } from 'vue';
+    import GameForm from '@/components/GameForm.vue';
+
     import Checkbox from '@/components/Checkbox.vue';
     import Radio from '@/components/Radio.vue';
     import RadioCheck from '@/components/RadioCheck.vue';
 
-    const search = ref('');
     const items = ref(['Reacts', 'Vues']);
-    const radios = ref(['HTML', 'CSS', 'JavaScript', 'Python', 'Ruby', 'Java', 'C#', 'PHP', 'Go', 'Swift']);
+    const radios = ref(['HTML', 'CSS', 'JavaScript', 'Python', 'Ruby', 'Java', 'C#', 'PHP', 'Go', 'Swift', 'Angular']);
 
 </script>

@@ -8,6 +8,8 @@
                 :name="grName" :id="radioLabel"
                 type="radio" class="peer h-5 w-5 shadow hover:shadow-md cursor-pointer appearance-none rounded-full border dark:border-gray-200 dark:checked:border-gray-100 border-slate-300 checked:border-slate-400"
                 @click="$emit('setActive', label)"
+                :value="label"
+                v-model="picked"
             >
             <span class="relative bg-slate-800 dark:bg-slate-200 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transform -translate-x-4">
             </span>
@@ -17,6 +19,8 @@
 </template>
 <script setup>
     import { ref } from 'vue';
+
+    const picked = defineModel();
 
     const props = defineProps({
         label: String,

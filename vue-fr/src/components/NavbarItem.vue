@@ -3,8 +3,8 @@
         <div class="flex justify-between py-2 items-center dark:text-gray-200">
             <div class="w-1/3 flex items-center"></div>
             <div class="w-1/3 flex justify-center items-center">
-                <RouterLink to="/">
-                    <svg class="size-12 text-sky-700 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <RouterLink class="pr-2" to="/">
+                    <svg class="size-10 text-sky-700 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
                         <path d="M11 7L8 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M16 7L13 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M18 10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -14,13 +14,13 @@
                 </RouterLink>
                 <ul class="hidden sm:flex flex-col sm:flex-row dark:text-gray-100">
                     <li>
-                        <RouterLink to="/" class="text-lg px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Home</RouterLink>
+                        <RouterLink to="/" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Home</RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="/conjugation" class="text-lg px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Conjugation</RouterLink>
+                        <RouterLink to="/conjugation" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Conjugation</RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="/game" class="text-lg px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Game</RouterLink>
+                        <RouterLink to="/game" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Game</RouterLink>
                     </li>
                 </ul>
             </div>
