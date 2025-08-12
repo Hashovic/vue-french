@@ -5,17 +5,22 @@
                 v-for="(item, i) in radioList"
                 :key="i"
                 :label="item.label"
+                :id="item.id"
                 :grName="grName"
                 @set-active="(l) => activate(l)"
-                :shouldDisable="shouldDisable"
+                v-model="radioPicked"
             />
         </div>
-        <ul class="ml-4">
+        <ul class="ml-4 grid grid-rows-4 grid-flow-col">
             <li
                 v-for="(item, i) in checkList"
                 :key="i"
                 >
-                <Checkbox :label="item" :isDisabled="shouldDisable" />
+                <Checkbox
+                    :label="item"
+                    :isDisabled="shouldDisable"
+                    v-model="checkPicked"
+                />
             </li>    
         </ul>
     </div>
@@ -27,15 +32,16 @@
 
     const props = defineProps({
         radioList: Array,   // array of objects {label, allowsChecks}
-        checkList: Array,   // array of strings
+        checkList: Array,   // array of strings`
         grName: String      // group name for radio buttons
     });
 
+    const radioPicked = defineModel('radioPicked', { type: String });
+    const checkPicked = defineModel('checkPicked', { type: Array });
+
     const shouldDisable = ref(false);
-    let active = '';
 
     function activate(label) {
-        active = label;
         shouldDisable.value = !props.radioList.find(item => item.label === label).allowsChecks;
     }
 

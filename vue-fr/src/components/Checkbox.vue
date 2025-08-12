@@ -23,7 +23,7 @@
     </div>
 </template>
 <script setup>
-    import { ref, watch } from 'vue';
+    import { watch } from 'vue';
 
     const checked = defineModel({type: Array});
 
@@ -35,6 +35,8 @@
     const checkboxLabel = (props.label.replace(/\s+/g, '-').toLowerCase() + '-check');
 
     watch(() => props.isDisabled, (disabled) => {
-        checked.value = checked.value.filter(v => v !== props.label);
+        if( disabled) {
+            checked.value = [];
+        }
     });
 </script>
