@@ -1,5 +1,5 @@
 <template>
-  <SearchBar />
+  <SearchBar v-if="validVerb !== 'server-down'" />
   <div v-if="validVerb === 'valid'">
     <h2 class="text-4xl font-light "><span class="font-medium text-sky-700 dark:text-amber-500">Verb: </span>{{ verb_ref }}</h2>
     <div class="flex flex-row">
@@ -43,6 +43,9 @@
   <div v-else-if="validVerb === 'not-found'">
     <VerbNotFound :verb="props.verbIn" />
   </div>
+  <div v-else-if="validVerb === 'server-down'">
+    <ServerDown />
+  </div>
   
 </template>
 <script setup>
@@ -50,6 +53,7 @@
   import { useStorage, useToggle } from '@vueuse/core';
   import ConjTable from '@/components/ConjTable.vue';
   import VerbNotFound from '@/components/VerbNotFound.vue';
+  import ServerDown from '@/components/ServerDown.vue';
   import SearchBar from '@/components/ConjSearchBar.vue';
 
   const props = defineProps({
@@ -108,16 +112,24 @@
   const conjugations = ref([]);
 
   async function fetchConjugation(v, fp) {
-    const url = `http://localhost:8080/api/all/${v}?fp=${fp}`;
-    const res = await fetch(url);
+    let data = [];
+    try {
+      const url = `http://localhost:8080/api/all/${v}?fp=${fp}`;
+      const res = await fetch(url);
 
-    if (!res.ok) {
-      validVerb.value = 'not-found';
+      if (!res.ok) {
+        validVerb.value = 'not-found';
+        return;
+      }
+      validVerb.value = 'valid';
+      data = await res.json();
+    }
+    catch {
+      validVerb.value = 'server-down';
       return;
     }
 
-    validVerb.value = 'valid';
-    const data = await res.json();
+    
 
     //  using the 3rd element as many verbs like falloir don't have a first
     const {verb, translation, conj_like, past_participle, reflexivity} = data[2]; 

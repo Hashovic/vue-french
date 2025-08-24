@@ -21,6 +21,7 @@
     import { ref } from 'vue';
 
     const picked = defineModel();
+    defineEmits(['setActive']);
 
     const props = defineProps({
         label: String,
@@ -28,6 +29,6 @@
         grName: String,
     });
 
-    const radioLabel = ref((props.id ?? props.label ?? '').replace(/\s+/g, '-').toLowerCase());
+    const radioLabel = ref((props.id) ?? (props.label ?? '').replace(/\s+/g, '-').toLowerCase());
 
 </script>

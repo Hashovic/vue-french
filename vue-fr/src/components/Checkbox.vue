@@ -9,7 +9,7 @@
                 :id="checkboxLabel"
                 type="checkbox"
                 :disabled="isDisabled"
-                :value="label"
+                :value="checkboxLabel"
                 v-model="checked"
                 class="peer h-5 w-5 cursor-pointer appearance-none rounded shadow hover:shadow-md border border-slate-300 dark:checked:bg-amber-500 dark:checked:border-amber-500 checked:bg-sky-600 checked:border-sky-600 relative"
             />
@@ -23,20 +23,12 @@
     </div>
 </template>
 <script setup>
-    import { watch } from 'vue';
-
     const checked = defineModel({type: Array});
-
     const props = defineProps({
+        id: String,
         label: String,
         isDisabled: {type: Boolean, default: false},
     });
 
-    const checkboxLabel = (props.label.replace(/\s+/g, '-').toLowerCase() + '-check');
-
-    watch(() => props.isDisabled, (disabled) => {
-        if( disabled) {
-            checked.value = [];
-        }
-    });
+    const checkboxLabel = (props.id) ?? (props.label ?? '').replace(/\s+/g, '-').toLowerCase();
 </script>

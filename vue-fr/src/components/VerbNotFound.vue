@@ -5,7 +5,7 @@
         </h1>
         <h3 class="text-xl font-light my-4">
             It doesn't appear that the verb <span class="italic font-[500]">{{ verb }}</span> is in our database. If it does exist,
-            it should follow the regular conjugation rules for it's ending.
+            it will likely follow the regular conjugation rules for it's ending.
         </h3>
         
         <h3 v-for="(v, end) of regularVerbs" :key="v" class="text-lg font-light mb-2">
