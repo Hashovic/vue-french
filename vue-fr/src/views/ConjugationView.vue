@@ -35,6 +35,7 @@
             :patterns="patterns"
             :conjugations="conjugations"
             :rare="rareTenses"
+            :secondary="secondaryEquivalents"
           />
         </div>
       </div>
@@ -55,6 +56,7 @@
   import VerbNotFound from '@/components/VerbNotFound.vue';
   import ServerDown from '@/components/ServerDown.vue';
   import SearchBar from '@/components/ConjSearchBar.vue';
+  import { tenses, rareTenses, secondaryEquivalents } from '@/utils/tenseLists.js';
 
   const props = defineProps({
     verbIn: String,
@@ -63,45 +65,6 @@
 
   const useRare = useStorage('showRare', true);
   const toggleRare = useToggle(useRare);
-
-  const tenses = {
-    "Indicative": {
-      'Présent': 'present',
-      'Imparfait': 'imparfait',
-      'Passé Simple': 'passe_simple',
-      'Futur Simple': 'futur_simple',
-  },
-    "Compound Tenses": {
-      'Futur Proche': 'future_proche',
-      'Passé Composé': 'passe_compose',
-      'Plus-que-parfait': 'plus_que_parfait',
-      'Futur Antérieur': 'futur_anterieur',
-      'Passé Antérieur': 'passe_anterieur',
-  },
-    "Subjunctive": {
-      'Présent du Subjonctif': 'pres_subj',
-      'Passé du Subjonctif': 'passe_subj',
-      'Subjonctif Imparfait': 'subj_imparfait',
-      'PQP du Subjonctif': 'plus_que_parfait_subj',
-  },
-    "Conditional": {
-      'Conditionnel': 'conditionnel',
-      'Passé Conditionnel': 'passe_conditionnel',
-      'Passé Conditionnel II': 'passe_conditionnel_II',
-    },
-    "Imperative": {
-      'Impératif': 'imperatif',
-      'Passe Impératif': 'passe_imperatif',
-    }
-  };
-
-  const rareTenses = new Set([
-    'passe_anterieur',
-    'subj_imparfait',
-    'passe_imperatif',
-    'passe_conditionnel_II',
-    'plus_que_parfait_subj'
-  ]);
 
   const validVerb = ref('');
   const verb_ref = ref('');
@@ -127,9 +90,7 @@
     catch {
       validVerb.value = 'server-down';
       return;
-    }
-
-    
+    }    
 
     //  using the 3rd element as many verbs like falloir don't have a first
     const {verb, translation, conj_like, past_participle, reflexivity} = data[2]; 

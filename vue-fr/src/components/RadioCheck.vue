@@ -42,7 +42,7 @@
     const radioPicked = defineModel('radioPicked', { type: String });
     const checkPicked = defineModel('checkPicked', { type: Array });
 
-    const shouldDisable = ref(true);
+    const shouldDisable = ref(props.radioList.length > 0 && props.radioList.find(rad => rad.id == radioPicked.value)?.allowsChecks ? false : true);
 
     function activate(label) {
         curRadio.value = props.radioList.find(item => item.label === label);

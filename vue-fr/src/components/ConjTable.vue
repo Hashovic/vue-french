@@ -21,6 +21,7 @@
               :title="title"
               :pattern="pattern"
               :conjugations="props.conjugations"
+              :secondary="props.secondary[pattern]"
             />
           </div>
         </div>
@@ -30,7 +31,9 @@
     import ConjItem from '@/components/ConjItem.vue';
     import { computed } from 'vue';
     import { useStorage } from '@vueuse/core';
-    const props = defineProps(['title', 'patterns', 'conjugations', 'rare']);
+
+    const props = defineProps(['title', 'patterns', 'conjugations', 'rare', 'secondary']);
+
     const showRare = useStorage('showRare', true);
     const filteredPatterns = computed(() => {
         return showRare.value ? props.patterns : Object.fromEntries(

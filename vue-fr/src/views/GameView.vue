@@ -1,41 +1,61 @@
 <template>
-    <div>
+    <!-- <div>
         This is the game view
     </div>
-    <div>{{ decoded }}</div>
+    <div>{{ decoded }}</div> -->
+    <GameComponent :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
 </template>
 <script setup>
+    import { decode, getRandomElement, pronounArr } from '@/utils/helper.js';
+    import GameComponent from '@/components/GameComponent.vue';
+    import { onMounted, ref } from 'vue';
+
     const props = defineProps({
         verbIn: String,
         options: String
     });
 
-    function decode(str) {
-        const obj = {};
+    const decoded = decode(props.options);
+    const validVerb = ref('');
+    const singleConj = ref(null);
+    const pronoun = ref('');
+    let formId = 0;
+    let feminine = false;
 
-        // match key + value parts
-        const regex = /([t_fpPnN])([^t_fpPnN]*)/g;
-        let match;
-        while ((match = regex.exec(str)) !== null) {
-            const key = match[1];
-            const val = match[2];
-            const num = Number(val);
-            const len = val.length;
-            
-            switch (key) {
-            case 't': obj.tp = (num >= 0 && num <= 1) ? num : 0; break;
-            case '_': obj.vs = (num >= 0 && num <= 1) ? num : 0; break;
-            case 'f': obj.fm = (num >= 0 && num <= 1) ? num : 0; break;
-
-            case 'p': obj.prRad = 'pn-' + (len > 1 && !(['a','r','s'].includes(val)) ? 'r' : val); break;
-            case 'P': obj.prCh = val.split('').map(parseInt); break;
-
-            case 'n': obj.tnRad = 'tn-' + (len > 1 && !(['a','v','s'].includes(val)) ? 'v' : val); break;
-            case 'N': obj.tnCh = val.split('').map(ch => parseInt(ch, 36)); break;
-            }
-        }
-        return obj;
+    switch (decoded.prRad){
+        case 'pn-r':
+            const random = getRandomElement(pronounArr);
+            pronoun.value = random.pronoun;
+            formId = random.formId;
+            feminine = random.fm || decoded.fm;
+            break;
+        default:
+            pronoun.value = 'je';
+            formId = '1';
+            feminine = decoded.fm;
+            break;
     }
 
-    const decoded = decode(props.options);
+    async function fetchConjugation(v, formId, fp, vs, fm) {
+        try {
+            const url = `http://localhost:8080/api/single/${v}/${formId}?fp=${fp}&vp=${Number(vs) ? 0 : 1}&fm=${fm}`;
+            const res = await fetch(url);
+
+            if (!res.ok) {
+                validVerb.value = 'not-found';
+                return;
+            }
+            validVerb.value = 'valid';
+            singleConj.value = await res.json();
+            console.log(singleConj.value);
+        }
+        catch {
+            validVerb.value = 'server-down';
+            return;
+        }
+    }
+
+    onMounted(() => {
+        fetchConjugation(props.verbIn, formId, decoded.fp, decoded.vs, feminine);
+    });
 </script>

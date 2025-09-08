@@ -7,17 +7,16 @@
                     <strong v-if="hasPronoun">{{ conj.pronoun }}</strong><span v-else>{{ conj.pronoun }}</span>
                 </div> -->
                 <div>
-                    {{ conj.pattern }}
+                    {{ conj.pattern }}<span v-if="conj.secondary">, {{ conj.secondary }}</span>
                 </div>
             </li>
         </ul>
     </div>
 </template>
- <!-- grid grid-cols-[3.5rem_1fr] -->
 <script setup>
     import { computed } from 'vue';
 
-    const props = defineProps(['title', 'pattern', 'conjugations']);
+    const props = defineProps(['title', 'pattern', 'conjugations', 'secondary']);
     const isImperatif = computed(() => (props.pattern === 'imperatif' || props.pattern === 'passe_imperatif'));
     const hasPronoun = computed(()=> !isImperatif.value); // Imperatif does not have pronouns, so we don't show them
     const nullPlaceHolder = '---'; // Placeholder for null values
@@ -25,17 +24,21 @@
     const list = computed(() => {
         return props.conjugations.map(conj => {
             let pronoun = conj.pronoun + ' ';
-            if (conj[props.pattern]?.[0].match(/[aeiou]/) && conj.form_id == 1) {
+            let conjPattern = conj[props.pattern];
+            let conjSecondary = props.secondary ? conj[props.secondary] : null;
+            
+            if (conjPattern?.[0].match(/[aeiou]/) && conj.form_id == 1) {
                 pronoun = 'j\'';
             };
 
             return {
-                pronoun: conj[props.pattern] && hasPronoun.value 
+                pronoun: conjPattern && hasPronoun.value 
                     ? pronoun :
-                    (conj[props.pattern] ? `(${conj.pronoun}) ` : ''),
-                pattern: conj[props.pattern] ? (isImperatif.value ? conj[props.pattern] + '!' : conj[props.pattern]) : nullPlaceHolder,
+                    (conjPattern ? `(${conj.pronoun}) ` : ''),
+                pattern: conjPattern ? (isImperatif.value && !conjSecondary ? conjPattern + '!' : conjPattern) : nullPlaceHolder,
+                secondary: conjSecondary && conjPattern ? (isImperatif.value ? conjSecondary + '!': conjSecondary) : null,
             };
         })
-    })    
+    });
     
 </script>

@@ -9,9 +9,9 @@ app.use(cors());
 
 app.get('/api/single/:verb/:formId', async (req, res) => {
     const { verb, formId } = req.params;
-    const { isFeminine, isVousPlural, forcePronomial } = req.query;
+    const { fm, vp, fp } = req.query;
 
-    const form = await getSingleForm(verb, formId, isFeminine, isVousPlural, forcePronomial);
+    const form = await getSingleForm(verb, formId, fm, vp, fp);
     res.json(form);
 });
 
