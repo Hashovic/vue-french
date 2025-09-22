@@ -56,7 +56,8 @@ export function decode(str) {
     export const pronounArr = [
         {pronoun: 'je',     formId: 1},
         {pronoun: 'tu',     formId: 2},
-        {pronoun: 'il/on',  formId: 3, fm: 0},
+        {pronoun: 'il',     formId: 3, fm: 0},
+        {pronoun: 'on',     formId: 3, fm: 0},
         {pronoun: 'elle',   formId: 3, fm: 1},
         {pronoun: 'nous',   formId: 4},
         {pronoun: 'vous',   formId: 5},
@@ -67,3 +68,15 @@ export function decode(str) {
     export function getRandomElement(arr){
         return arr[Math.floor(Math.random() * arr.length)];
     }
+
+    const defectiveVerbs = new Map([
+        ['falloir', ['il']],
+        ['pleuvoir', ['il, ils']],
+    ]);
+
+    export function checkNotDefective(verb){ 
+        // check if the verb is defective in the given form
+        const defective = defectiveVerbs.get(verb);
+
+        return defective ? pronounArr.filter(pr => defective.includes(pr.pronoun)) : pronounArr;
+    };

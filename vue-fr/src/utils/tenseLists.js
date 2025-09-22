@@ -54,7 +54,7 @@ export const verbathonTenses = [
 ];
 
 export const allTensesIdList = [
-    'present','imparfait','passe_simple',
+    'present','passe_simple','imparfait',
     'futur_simple','future_proche','passe_compose',
     'plus_que_parfait','futur_anterieur','passe_anterieur',
     'pres_subj','passe_subj','subj_imparfait','plus_que_parfait_subj',

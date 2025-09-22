@@ -3,10 +3,10 @@
         This is the game view
     </div>
     <div>{{ decoded }}</div> -->
-    <GameComponent :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
+    <GameComponent v-if="singleConj" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
 </template>
 <script setup>
-    import { decode, getRandomElement, pronounArr } from '@/utils/helper.js';
+    import { decode, getRandomElement, checkNotDefective} from '@/utils/helper.js';
     import GameComponent from '@/components/GameComponent.vue';
     import { onMounted, ref } from 'vue';
 
@@ -19,12 +19,13 @@
     const validVerb = ref('');
     const singleConj = ref(null);
     const pronoun = ref('');
+    const validPronouns = checkNotDefective(props.verbIn);
     let formId = 0;
     let feminine = false;
 
     switch (decoded.prRad){
         case 'pn-r':
-            const random = getRandomElement(pronounArr);
+            const random = getRandomElement(validPronouns);
             pronoun.value = random.pronoun;
             formId = random.formId;
             feminine = random.fm || decoded.fm;
