@@ -33,7 +33,7 @@
 
     const checkSecondary = (t) => {
         if(checkImperatif(t)) {
-            return Object.keys(formData[t].secondary).length > 0;
+            return Object.keys(formData[t]?.secondary ?? {}).length > 0;
         }
         return Object.hasOwn(formData[t], 'secondary');
     };
@@ -57,8 +57,8 @@
     showOrder.forEach(tense => {
         if(checkImperatif(tense)){
             formData[tense] = { primary: {tu: "", nous: "", vous: "" } };
+            formData[tense].secondary = {};
             if(tense === 'imperatif'){
-                formData[tense].secondary = {};
                 if(props.conj['tu_form_imperatif_secondary']) formData[tense].secondary['tu'] = "";
                 if(props.conj['nous_form_imperatif_secondary']) formData[tense].secondary['nous'] = "";
                 if(props.conj['vous_form_imperatif_secondary']) formData[tense].secondary['vous'] = "";

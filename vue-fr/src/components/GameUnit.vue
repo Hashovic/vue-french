@@ -18,11 +18,14 @@
         <div v-else class="grid grid-flow-col grid-rows-3 grid-cols-2 gap-2 items-baseline">
             <div v-for="(_ , impPronoun) in ans.primary" :key="impPronoun" class="flex items-baseline">
                 <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.primary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
-                <span class="text-xl pl-2">{{hasSecondary ? "," : "!"}}</span>
+                <span class="text-xl pl-2">{{impPronoun in ans.secondary ? ',' : '!'}}</span>
             </div>
-
-            <div v-if="hasSecondary" v-for="(_ , impPronoun) in ans.secondary" :key="impPronoun" class="flex items-baseline">
-                <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.secondary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" /><span class="text-xl pl-2">!</span>
+            
+            <div v-if="hasSecondary" v-for="(_ , impPronoun) in ans.primary" :key="impPronoun">
+                <div v-if="ans.secondary[impPronoun] !== undefined" class="flex items-baseline">
+                    <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.secondary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" /><span class="text-xl pl-2">!</span>
+                </div>
+                <div v-else></div>
             </div>
         </div>
     </div>

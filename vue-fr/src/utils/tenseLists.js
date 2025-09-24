@@ -54,12 +54,12 @@ export const verbathonTenses = [
 ];
 
 export const allTensesIdList = [
-    'present','passe_simple','imparfait',
-    'futur_simple','future_proche','passe_compose',
-    'plus_que_parfait','futur_anterieur','passe_anterieur',
-    'pres_subj','passe_subj','subj_imparfait','plus_que_parfait_subj',
-    'conditionnel','passe_conditionnel','passe_conditionnel_II',
-    'imperatif','passe_imperatif'
+    'present','future_proche','imperatif',
+    'passe_compose','imparfait','pres_subj',
+    'futur_simple','conditionnel','plus_que_parfait',
+    'passe_subj','futur_anterieur','passe_simple','passe_anterieur',
+    'subj_imparfait','plus_que_parfait_subj',
+    'passe_conditionnel','passe_conditionnel_II','passe_imperatif'
 ]
 
 export const allButRareTensesIdList = [
