@@ -4,7 +4,7 @@
         class="w-full cursor-pointer mx-auto my-4 bg-sky-700 hover:bg-sky-800 text-white font-bold py-2 px-4 rounded dark:bg-amber-500 dark:hover:bg-amber-600 transition-colors outline-none disabled:opacity-50 disabled:pointer-events-none"
         @click="isOpen = true"
     >
-        Submit
+        Submit Answers
     </button>
     <div
     v-if="isOpen"
