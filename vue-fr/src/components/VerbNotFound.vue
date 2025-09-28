@@ -11,7 +11,7 @@
         <h3 v-for="(v, end) of regularVerbs" :key="v" class="text-lg font-light mb-2">
             <RouterLink 
                 class="text-sky-700 dark:text-amber-500 hover:text-sky-800 dark:hover:text-amber-600"
-                :to="{name: conjugation, params: {verb: v}}">{{ v }}
+                :to="{name: 'conjugation', params: {verb: v}}">{{ v }}
             </RouterLink> (regular -{{ end }} verb)
         </h3>
     </div>

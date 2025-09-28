@@ -4,13 +4,13 @@
         <div v-if="!isImperatif" class="grid grid-cols-2 gap-2 items-baseline">
             <div class="relative">
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
-                    {{ pronoun }}
+                    {{ childPronoun }}
                 </span>
                 <input type="text" v-model="ans.primary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
             <div v-if="hasSecondary" class="relative">
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
-                    {{ pronoun }}
+                    {{ childPronoun }}
                 </span>
                 <input type="text" v-model="ans.secondary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
@@ -32,6 +32,7 @@
 </template>
 <script setup>
     import { tenseCheckList } from '@/utils/tenseLists';
+    import { ref, watch } from 'vue';
 
     const props = defineProps({
         tense: String,
@@ -40,6 +41,18 @@
         pronoun: String,
     });
 
+    const childPronoun = ref(props.pronoun);
+
+    watch(() => props.ans.primary, (newV, oldV) => {
+        if(props.pronoun !== 'je' || props.ans.primary === null || (newV?.[0] === oldV?.[0])) return;
+
+        if ("aeiou".includes(newV[0]?.toLowerCase())) {
+            childPronoun.value = "j'";
+            return;
+        }
+
+        childPronoun.value = props.pronoun;
+    });
 
     const isImperatif = props.tense === 'imperatif' || props.tense === 'passe_imperatif';
     const label = tenseCheckList.find(x => x.id === props.tense).label;

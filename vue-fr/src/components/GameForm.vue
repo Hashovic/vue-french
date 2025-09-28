@@ -4,7 +4,9 @@
             <input
                 type="text"
                 id="verb-input"
-                placeholder="Enter verb:"
+                placeholder="Enter verb"
+                autocomplete="off"
+                spellcheck="false"
                 class="border-2 border-gray-300 p-2 rounded w-full mb-2"
                 v-model="chosenVerb"
             >

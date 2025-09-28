@@ -1,10 +1,10 @@
 <template>
     <button
         type="button"
-        class="w-full cursor-pointer mx-auto my-4 bg-sky-700 hover:bg-sky-800 text-white font-bold py-2 px-4 rounded dark:bg-amber-500 dark:hover:bg-amber-600 transition-colors outline-none disabled:opacity-50 disabled:pointer-events-none"
-        @click="isOpen = true"
+        class="w-full cursor-pointer mx-auto my-4 bg-sky-700 hover:bg-sky-800 dark:bg-amber-500 dark:hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition-colors outline-none disabled:opacity-50 disabled:pointer-events-none"
+        @click="emit('clicked')"
     >
-        Submit Answers
+        {{ buttonText }}
     </button>
     <div
     v-if="isOpen"
@@ -22,7 +22,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-neutral-700">
             <h3 id="modal-label" class="font-bold text-gray-800 dark:text-white">
-            Modal title
+            {{ modalTitle }}
             </h3>
             <button
             type="button"
@@ -40,7 +40,7 @@
         <!-- Body -->
         <div class="p-4">
             <p class="text-gray-800 dark:text-neutral-400">
-            This is a wider card with supporting text below as a natural lead-in to additional content.
+            {{ modalBody }}
             </p>
         </div>
 
@@ -48,17 +48,17 @@
         <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700">
             <button
             type="button"
-            class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white hover:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700"
+            class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white hover:bg-gray-200 duration-80 transition-colors dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700"
             @click="isOpen = false"
             >
-            Close
+            {{ buttonTextClose }}
             </button>
             <button
             type="button"
-            class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700"
-            @click="handleSave"
+            class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm bg-sky-700 hover:bg-sky-800 dark:bg-amber-500 dark:hover:bg-amber-600 duration-80 transition-colors text-white font-medium rounded-lg border border-transparent"
+            @click="handleConfirm"
             >
-            Save changes
+            {{ buttonTextConfirm }}
             </button>
         </div>
         </div>
@@ -70,8 +70,33 @@
 import { ref, watch, nextTick } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 
-const isOpen = ref(false)
 const modalRef = ref(null);
+const emit = defineEmits(['confirm', 'clicked']);
+
+const isOpen = defineModel({default: false});
+
+defineProps({
+  buttonText: {
+    type: String,
+    default: 'Open Modal'
+  },
+  modalTitle: {
+    type: String,
+    default: 'Modal Title'
+  },
+  modalBody: {
+    type: String,
+    default: 'This is the modal body content.'
+  },
+  buttonTextClose: {
+    type: String,
+    default: 'Close'
+  },
+  buttonTextConfirm: {
+    type: String,
+    default: 'Save changes'
+  }
+})
 
 const { activate, deactivate } = useFocusTrap(modalRef, {
   escapeDeactivates: true,
@@ -87,8 +112,8 @@ watch(isOpen, async (open) => {
   else deactivate()
 })
 
-function handleSave() {
-  console.log('Save clicked')
+function handleConfirm() {
+  emit('confirm');
   isOpen.value = false
 }
 </script>
