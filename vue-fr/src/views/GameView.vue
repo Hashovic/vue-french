@@ -1,14 +1,12 @@
 <template>
-    <!-- <div>
-        This is the game view
-    </div>
-    <div>{{ decoded }}</div> -->
-    <GameComponent v-if="singleConj" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
+    <GameComponent v-if="singleConj && !complete" @completed="showSolution" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
+    <SolutionComponent v-else-if="singleConj" :incorrect="completedIncorrect" :formData="completedAnswers" :conj="singleConj" :pronoun="pronoun"/>
 </template>
 <script setup>
     import { decode, getRandomElement, checkNotDefective} from '@/utils/helper.js';
     import GameComponent from '@/components/GameComponent.vue';
     import { onMounted, ref } from 'vue';
+    import SolutionComponent from '@/components/SolutionComponent.vue';
 
     const props = defineProps({
         verbIn: String,
@@ -19,7 +17,11 @@
     const validVerb = ref('');
     const singleConj = ref(null);
     const pronoun = ref('');
+    const complete = ref(false);
     const validPronouns = checkNotDefective(props.verbIn);
+    const completedIncorrect = ref(null);
+    const completedAnswers = ref(null);
+
     let formId = 0;
     let feminine = false;
 
@@ -48,12 +50,18 @@
             }
             validVerb.value = 'valid';
             singleConj.value = await res.json();
-            console.log(singleConj.value);
         }
         catch {
             validVerb.value = 'server-down';
             return;
         }
+    }
+
+    function showSolution(incorrect, formData) {
+        complete.value = true;
+        completedIncorrect.value = incorrect;
+        completedAnswers.value = formData;
+        console.log('User answers:', completedAnswers.value);
     }
 
     onMounted(() => {

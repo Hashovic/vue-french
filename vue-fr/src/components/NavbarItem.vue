@@ -1,5 +1,5 @@
 <template>
-    <nav class="fixed top-0 left-0 z-20 w-full bg-gray-200/95 dark:bg-[#181818]/80 justify-start sm:justify-center shadow-md shadow-gray-300 dark:shadow-white/[0.08]">
+    <nav class="fixed top-0 left-0 z-20 w-full bg-gray-200/95 dark:bg-[#181818]/80 justify-start sm:justify-center rounded-3xl shadow-md shadow-gray-300 dark:shadow-white/[0.08]">
         <div class="flex justify-between py-2 items-center dark:text-gray-200">
             <div class="w-1/3 flex items-center"></div>
             <div class="w-1/3 flex justify-center items-center">

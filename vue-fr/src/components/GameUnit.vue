@@ -6,7 +6,7 @@
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
                     {{ childPronoun }}
                 </span>
-                <input type="text" v-model="ans.primary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
+                <input type="text" @input="e => handleInput(e, val => ans.primary = val)" v-model="ans.primary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
             <div v-if="hasSecondary" class="relative">
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
@@ -32,6 +32,7 @@
 </template>
 <script setup>
     import { tenseCheckList } from '@/utils/tenseLists';
+    import { frenchAccentMap, checkImperatif } from '@/utils/helper';
     import { ref, watch } from 'vue';
 
     const props = defineProps({
@@ -54,7 +55,27 @@
         childPronoun.value = props.pronoun;
     });
 
-    const isImperatif = props.tense === 'imperatif' || props.tense === 'passe_imperatif';
+    const isImperatif = checkImperatif(props.tense);
     const label = tenseCheckList.find(x => x.id === props.tense).label;
+
+    function handleInput(event, updateModel) {
+        const el = event.target
+        const pos = el.selectionStart
+        const before = el.value.slice(0, pos)
+        const after = el.value.slice(pos)
+
+        for(const [pattern, replacement] of Object.entries(frenchAccentMap)){
+            if (before.endsWith(pattern)) {
+                const newVal = before.slice(0, -2) + replacement + after
+                updateModel(newVal);
+                // put cursor right after the inserted character
+                requestAnimationFrame(() => {
+                    el.selectionStart = el.selectionEnd = pos - 1
+                })
+
+                return;
+            }
+        }
+    }
 
 </script>

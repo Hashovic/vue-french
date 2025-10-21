@@ -17,13 +17,14 @@
             />
              <Modal v-model="modalToggle" button-text="Submit Answers" modal-title="Confirmation"
                 :modal-body="modalMsg"
-                button-text-close="Close" button-text-confirm="Confirm" @clicked="checkCompleted" @confirm="checkAnswers"
+                button-text-close="Cancel" button-text-confirm="Confirm" @clicked="checkCompleted" @confirm="checkAnswers"
              />
         </form>
     </div>
 </template>
 <script setup>
     import { verbathonTenses, allTensesIdList, tenseCheckList, secondaryEquivalents, imperatifEquivalents } from '@/utils/tenseLists';
+    import { checkImperatif } from '@/utils/helper';
     import GameUnit from '@/components/GameUnit.vue';
     import { ref, reactive } from 'vue';
     import Modal from './Modal.vue';
@@ -37,6 +38,7 @@
 
     const modalToggle = ref(false);
     const modalMsg = ref('You haven\'t completed all avialable conjugations. Are you sure you want to submit?');
+    const emit = defineEmits(['completed']);
 
     const checkSecondary = (t) => {
         if(checkImperatif(t)) {
@@ -44,7 +46,6 @@
         }
         return Object.hasOwn(formData[t], 'secondary');
     };
-    const checkImperatif = (t) => t === 'imperatif' || t === 'passe_imperatif';
 
     let showOrder = [];
 
@@ -121,7 +122,6 @@
     }
 
     function checkAnswers(){
-        console.log(formData);
         const incorrect = new Map();
 
         for(const tense in formData) {
@@ -156,6 +156,6 @@
                 }
             }
         }
-        console.log(incorrect);
+        emit('completed', incorrect, formData);
     }
 </script>
