@@ -1,8 +1,9 @@
 <template>
     <div class="">
         <h3 class="pl-4 text-lg font-medium">{{ title }}</h3>
-        <ul class="border-2 border-gray-300 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600/30">
+        <ul class="border-2 rounded-lg border-gray-300 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600/30">
             <li v-for="conj in list" :key="conj.form_id" class="pl-2">
+                <!-- MAYBE LEAVE THIS GUY FOR MOBILE ONLY -->
                 <!-- <div>
                     <strong v-if="hasPronoun">{{ conj.pronoun }}</strong><span v-else>{{ conj.pronoun }}</span>
                 </div> -->

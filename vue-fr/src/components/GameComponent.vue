@@ -61,15 +61,28 @@
     }
 
     const formData = reactive({});
-    
+
+    console.log(props.conj);
+
+    // Sets up formData with all the tenses
     showOrder.forEach(tense => {
         if(checkImperatif(tense)){
-            formData[tense] = { primary: {tu: "", nous: "", vous: "" } };
-            formData[tense].secondary = {};
+            const pronounObj = {};
+            for(const pronoun of Object.keys(imperatifEquivalents[tense])) {
+                if(props.conj[imperatifEquivalents[tense][pronoun]]) pronounObj[pronoun] = "";
+            }
+
+            if (Object.keys(pronounObj).length === 0) return;
+            formData[tense] = { primary: pronounObj };
+
+            const secondaryPronounObj = {};
             if(tense === 'imperatif'){
-                if(props.conj['tu_form_imperatif_secondary']) formData[tense].secondary['tu'] = "";
-                if(props.conj['nous_form_imperatif_secondary']) formData[tense].secondary['nous'] = "";
-                if(props.conj['vous_form_imperatif_secondary']) formData[tense].secondary['vous'] = "";
+                if(props.conj['tu_form_imperatif_secondary']) secondaryPronounObj['tu'] = "";
+                if(props.conj['nous_form_imperatif_secondary']) secondaryPronounObj['nous'] = "";
+                if(props.conj['vous_form_imperatif_secondary']) secondaryPronounObj['vous'] = "";
+            }
+            if(Object.keys(secondaryPronounObj).length > 0){
+                formData[tense].secondary = secondaryPronounObj;
             }
             return;
         }
@@ -80,6 +93,7 @@
         }
     });
 
+    // Checks if all fields were attempted
     function checkCompleted(){
         if(!props.conj) return;
         const uncompleted = new Set();
@@ -121,8 +135,11 @@
         else checkAnswers();
     }
 
+    // Checks for answer correctness
     function checkAnswers(){
         const incorrect = new Map();
+
+        console.log(formData);
 
         for(const tense in formData) {
             if(checkImperatif(tense)){
@@ -156,6 +173,7 @@
                 }
             }
         }
+        console.log(incorrect);
         emit('completed', incorrect, formData);
     }
 </script>

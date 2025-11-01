@@ -1,10 +1,10 @@
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col mb-[14px]">
         <h3 class="text-2xl justify-center text-center my-2 text-sky-700 dark:text-amber-500">{{ title }}</h3>
         <div class="flex gap-4">
           <div>
             <div class="mt-7">
-              <div class="px-1 border-2 border-gray-300 dark:border-gray-200 font-bold text-right" >
+              <div class="px-1 border-2 rounded-lg border-gray-300 dark:border-gray-200 font-bold text-right" >
                 <div>je</div>
                 <div>tu</div>
                 <div>il/elle/on</div>

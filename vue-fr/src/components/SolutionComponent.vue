@@ -7,12 +7,19 @@
                 <h3 class="text-xl mr-4"><span class="font-medium">Pronoun: </span><span class="text-sky-700 dark:text-amber-500">{{ pronoun }}</span></h3>
             </div>
         </div>
-        <div class="grid grid-cols-[3fr_1fr] gap-4 mb-10">
+        <div class="grid grid-cols-[3fr_1fr] gap-4 mb-8">
             <div>
                 <SolutionUnit v-for="(ans, tense) in formData" :key="tense" @inc-incorrect="addIncorrect" @inc-total="addTotal" :conj="conj" :tense="tense" :answer="ans" :incorrect="incorrect" />
+                <button
+                    type="button"
+                    class="w-full cursor-pointer mx-auto my-5 bg-sky-700 hover:bg-sky-800 dark:bg-amber-500 dark:hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition-colors outline-none disabled:opacity-50 disabled:pointer-events-none"
+                    @click="restart"
+                >
+                    Restart
+                </button>
             </div>
             <div class="grid grid-rows-[1fr_2fr_2fr] gap-5">
-                <div class="border-1 text-6xl text-center border-gray-500/60 dark:border-gray-400/80 rounded-lg p-2 mb-2">
+                <div class="flex flex-col justify-between border-1 text-6xl text-center border-gray-500/60 dark:border-gray-400/80 rounded-lg px-2 pt-5 pb-7 my-2">
                     <div>
                         {{ (totalCount - incorrectCount) / totalCount * 100 | 0 }}%
                     </div>
@@ -31,7 +38,11 @@
 </template>
 <script setup>
     import { ref } from 'vue';
+    import { useRouter } from 'vue-router';
     import SolutionUnit from './SolutionUnit.vue';
+
+    
+    const router = useRouter();
     const incorrectCount = ref(0);
     const totalCount = ref(0);
 
@@ -42,16 +53,16 @@
         pronoun: String,
     });
 
-    console.log(props.conj);
-
-    console.log("Hello", props.incorrect);
+    function restart() {
+        router.push({name: 'game-home'});
+    }
 
     function addIncorrect() {
         incorrectCount.value += 1;
     }
 
-    function addTotal(total=1) {
-        totalCount.value += total;
+    function addTotal(inc=1) {
+        totalCount.value += inc;
     }
 
 

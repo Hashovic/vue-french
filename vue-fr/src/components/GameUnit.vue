@@ -18,7 +18,7 @@
         <div v-else class="grid grid-flow-col grid-rows-3 grid-cols-2 gap-2 items-baseline">
             <div v-for="(_ , impPronoun) in ans.primary" :key="impPronoun" class="flex items-baseline">
                 <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.primary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
-                <span class="text-xl pl-2">{{impPronoun in ans.secondary ? ',' : '!'}}</span>
+                <span class="text-xl pl-2">{{ans.secondary && Object.hasOwn(ans.secondary, impPronoun) ? ',' : '!'}}</span>
             </div>
             
             <div v-if="hasSecondary" v-for="(_ , impPronoun) in ans.primary" :key="impPronoun">
@@ -34,7 +34,7 @@
     import { tenseCheckList } from '@/utils/tenseLists';
     import { frenchAccentMap, checkImperatif } from '@/utils/helper';
     import { ref, watch } from 'vue';
-
+    
     const props = defineProps({
         tense: String,
         ans: Object,
@@ -44,6 +44,7 @@
 
     const childPronoun = ref(props.pronoun);
 
+    // Adds cool je to j' behavior
     watch(() => props.ans.primary, (newV, oldV) => {
         if(props.pronoun !== 'je' || props.ans.primary === null || (newV?.[0] === oldV?.[0])) return;
 
@@ -58,6 +59,7 @@
     const isImperatif = checkImperatif(props.tense);
     const label = tenseCheckList.find(x => x.id === props.tense).label;
 
+    // Adds accented characters from key patterns
     function handleInput(event, updateModel) {
         const el = event.target
         const pos = el.selectionStart
