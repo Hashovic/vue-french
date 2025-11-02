@@ -1,10 +1,10 @@
 <template>
-    <GameComponent v-if="singleConj && !complete" @completed="showSolution" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
+    <PracticeComponent v-if="singleConj && !complete" @completed="showSolution" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
     <SolutionComponent v-else-if="singleConj" :incorrect="completedIncorrect" :formData="completedAnswers" :conj="singleConj" :pronoun="pronoun"/>
 </template>
 <script setup>
     import { decode, getRandomElement, checkNotDefective} from '@/utils/helper.js';
-    import GameComponent from '@/components/GameComponent.vue';
+    import PracticeComponent from '@/components/PracticeComponent.vue';
     import { onMounted, ref } from 'vue';
     import SolutionComponent from '@/components/SolutionComponent.vue';
 

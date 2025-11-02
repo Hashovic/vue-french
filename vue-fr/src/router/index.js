@@ -23,14 +23,14 @@ const router = createRouter({
       }),
     },
     {
-      path: '/game',
-      name: 'game-home',
-      component: () => import('@/views/GameHomeView.vue'),
+      path: '/practice',
+      name: 'practice-home',
+      component: () => import('@/views/PracticeHomeView.vue'),
     },
     {
-      path: '/game/:verb',
-      name: 'game',
-      component: () => import('@/views/GameView.vue'),
+      path: '/practice/:verb',
+      name: 'practice',
+      component: () => import('@/views/PracticeView.vue'),
       props: (route) => ({
         verbIn: route.params.verb,
         options: route.query.opt,

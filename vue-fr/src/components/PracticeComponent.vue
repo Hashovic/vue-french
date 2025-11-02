@@ -8,7 +8,7 @@
             </div>
         </div>
         <form v-if="conj" @submit.prevent="checkCompleted" class="grid grid-cols-1 py-1 gap-y-2">
-            <GameUnit
+            <PracticeUnit
                 v-for="(ans, tense) in formData"
                 :tense="tense"
                 :ans="ans"
@@ -25,7 +25,7 @@
 <script setup>
     import { verbathonTenses, allTensesIdList, tenseCheckList, secondaryEquivalents, imperatifEquivalents } from '@/utils/tenseLists';
     import { checkImperatif } from '@/utils/helper';
-    import GameUnit from '@/components/GameUnit.vue';
+    import PracticeUnit from '@/components/PracticeUnit.vue';
     import { ref, reactive } from 'vue';
     import Modal from './Modal.vue';
 

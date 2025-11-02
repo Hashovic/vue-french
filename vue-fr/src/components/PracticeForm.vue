@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="game-form" @submit.prevent="submitForm">
+        <form id="practice-form" @submit.prevent="submitForm">
             <input
                 type="text"
                 id="verb-input"
@@ -138,7 +138,7 @@ const submitForm = () => {
     }
 
     router.push({
-        name: 'game',
+        name: 'practice',
         params: { verb: match.groups.verb },
         query: { opt: encode(options) }
     });

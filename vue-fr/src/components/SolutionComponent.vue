@@ -40,7 +40,6 @@
     import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     import SolutionUnit from './SolutionUnit.vue';
-
     
     const router = useRouter();
     const incorrectCount = ref(0);
@@ -54,7 +53,7 @@
     });
 
     function restart() {
-        router.push({name: 'game-home'});
+        router.push({name: 'practice-home'});
     }
 
     function addIncorrect() {

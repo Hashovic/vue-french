@@ -20,7 +20,7 @@
                         <RouterLink to="/conjugation" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Conjugation</RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="/game" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Game</RouterLink>
+                        <RouterLink to="/practice" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Practice</RouterLink>
                     </li>
                 </ul>
             </div>
