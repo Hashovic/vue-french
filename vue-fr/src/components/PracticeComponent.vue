@@ -62,8 +62,6 @@
 
     const formData = reactive({});
 
-    console.log(props.conj);
-
     // Sets up formData with all the tenses
     showOrder.forEach(tense => {
         if(checkImperatif(tense)){
@@ -139,41 +137,107 @@
     function checkAnswers(){
         const incorrect = new Map();
 
-        console.log(formData);
-
         for(const tense in formData) {
             if(checkImperatif(tense)){
-                for(const impPronoun in formData[tense].primary) {
-                    if(formData[tense].primary[impPronoun].trim() !== props.conj[imperatifEquivalents[tense][impPronoun]]){
+                if(tense === 'imperatif' && formData[tense].secondary){
+                    for(const impPronoun in formData[tense].primary) {
+                        let primaryIncorrect = true;
+                        let switched = false;
+                        const primaryAns = formData[tense].primary[impPronoun].trim();
+                        const secondaryAns = formData[tense].secondary[impPronoun].trim();
+                        const primaryCorrect = props.conj[imperatifEquivalents[tense][impPronoun]]
+
+                        if(primaryCorrect === primaryAns){
+                            primaryIncorrect = false;
+                        }
+                        else if(primaryCorrect === secondaryAns){
+                            primaryIncorrect = false;
+                            switched = true;
+                        }
+
                         const cur = incorrect.get(tense) ?? incorrect.set(tense, {}).get(tense);
                         Object.hasOwn(cur, 'primary') || (cur.primary = []);
-                        cur.primary.push(impPronoun);
+                        if (primaryIncorrect) cur.primary.push(impPronoun);
+                        if (switched){
+                            Object.hasOwn(cur, 'switched') || (cur.switched = []);
+                            cur.switched.push(impPronoun);
+                        }
+                    }
+                    for(const impPronoun in formData[tense].secondary) {
+                        let secondaryIncorrect = true;
+                        let switched = false;
+                        const primaryAns = formData[tense].primary[impPronoun].trim();
+                        const secondaryAns = formData[tense].secondary[impPronoun].trim();
+                        const secondaryCorrect = props.conj[imperatifEquivalents['imperatif_secondary'][impPronoun]];
+
+                        if(secondaryCorrect === secondaryAns){
+                            secondaryIncorrect = false;
+                        }
+                        else if(secondaryCorrect === primaryAns){
+                            secondaryIncorrect = false;
+                            switched = true;
+                        }
+
+                        const cur = incorrect.get(tense) ?? incorrect.set(tense, {}).get(tense);
+                        Object.hasOwn(cur, 'secondary') || (cur.secondary = []);
+                        if (secondaryIncorrect) cur.secondary.push(impPronoun);
+                        if (switched){
+                            Object.hasOwn(cur, 'switched') || (cur.switched = []);
+                            cur.switched.push(impPronoun);
+                        }
                     }
                 }
-                if(tense === 'imperatif' && formData[tense].secondary){
-                    for(const impPronoun in formData[tense].secondary) {
-                        if(formData[tense].secondary[impPronoun].trim() !== props.conj[imperatifEquivalents['imperatif_secondary'][impPronoun]]){
+                else{
+                    for(const impPronoun in formData[tense].primary) {
+                        if(formData[tense].primary[impPronoun].trim() !== props.conj[imperatifEquivalents[tense][impPronoun]]){
                             const cur = incorrect.get(tense) ?? incorrect.set(tense, {}).get(tense);
-                            Object.hasOwn(cur, 'secondary') || (cur.secondary = []);
-                            cur.secondary.push(impPronoun);
+                            Object.hasOwn(cur, 'primary') || (cur.primary = []);
+                            cur.primary.push(impPronoun);
                         }
                     }
                 }
             }
             else {
-                if(formData[tense].primary.trim() !== props.conj[tense]){
-                    const cur = incorrect.get(tense) ?? incorrect.set(tense, []).get(tense);
-                    cur.push('p');
-                }
                 if(Object.hasOwn(formData[tense], 'secondary')){
-                    if(formData[tense].secondary.trim() !== props.conj[secondaryEquivalents[tense]]){
+                    let primaryIncorrect = true;
+                    let secondaryIncorrect = true;
+                    let switched = false;
+                    const primaryAns = formData[tense].primary.trim();
+                    const secondaryAns = formData[tense].secondary.trim();
+                    const primaryCorrect = props.conj[tense];
+                    const secondaryCorrect = props.conj[secondaryEquivalents[tense]];
+
+                    if(primaryCorrect === primaryAns){
+                        primaryIncorrect = false;
+                    }
+                    else if(primaryCorrect === secondaryAns){
+                        primaryIncorrect = false;
+                        switched = true;
+                    }
+
+                    if(secondaryCorrect === secondaryAns){
+                        secondaryIncorrect = false;
+                    }
+                    else if(secondaryCorrect === primaryAns){
+                        secondaryIncorrect = false;
+                        switched = true;
+                    }
+
+                    if (primaryIncorrect)   (incorrect.get(tense) ?? incorrect.set(tense, []).get(tense)).push('p');
+                    if (secondaryIncorrect) (incorrect.get(tense) ?? incorrect.set(tense, []).get(tense)).push('s');
+                    if (switched)           (incorrect.get(tense) ?? incorrect.set(tense, []).get(tense)).push('w');
+                }
+                else {
+                    if(formData[tense].primary.trim() !== props.conj[tense]){
                         const cur = incorrect.get(tense) ?? incorrect.set(tense, []).get(tense);
-                        cur.push('s')
+                        cur.push('p');
                     }
                 }
             }
         }
-        console.log(incorrect);
+        console.log("conj:", props.conj);
+        console.log("incorrect:", incorrect);
+        console.log("formData:", formData);
         emit('completed', incorrect, formData);
     }
 </script>

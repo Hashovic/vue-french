@@ -61,7 +61,6 @@
         complete.value = true;
         completedIncorrect.value = incorrect;
         completedAnswers.value = formData;
-        console.log('User answers:', completedAnswers.value);
     }
 
     onMounted(() => {
