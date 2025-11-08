@@ -8,13 +8,13 @@ export function encode(obj) {
     obj.fm ? str += "2" : null;
     obj.fp ? str += "3" : null;
 
-    tmp = obj.prRad.replace("pn-", "");
+    tmp = obj.prRad1.replace("pn-", "");
     str += "p" + tmp;
-    str += "P" + ((tmp === 'a' || tmp === 'r') ? '' : obj.prCh.join(""));
+    if(tmp === 's') str += "P" + (obj.prRad2 ?? '1').toString();
 
     tmp = obj.tnRad.replace("tn-", "");
     str += "n" + tmp;
-    str += "N" + ((tmp === 'a' || tmp === 'v') ? '' : obj.tnCh.map(n => n.toString(36)).join("").toUpperCase());
+    str += "N" + ((tmp === 'a' || tmp === 'v' || tmp === 'R') ? '' : obj.tnCh.map(n => n.toString(36)).join("").toUpperCase());
 
     return str;
 }
@@ -28,7 +28,6 @@ export function decode(str) {
         while ((match = regex.exec(str)) !== null) {
             const key = match[1];
             const val = match[2];
-            const num = Number(val);
             const len = val.length;
             
             switch (key) {
@@ -38,18 +37,18 @@ export function decode(str) {
                     if (ch === '3') obj.fp = 1;
                 })
 
-                case 'p': obj.prRad = 'pn-' + (len > 1 && !(['a','r','s'].includes(val)) ? 'r' : val); break;
-                case 'P': obj.prCh = val.split('').map(parseInt); break;
+                case 'p': obj.prRad1 = 'pn-' + (len > 1 && !(['r','s'].includes(val)) ? 'r' : val); break;
+                case 'P': obj.prRad2 = parseInt(val); break;
 
-                case 'n': obj.tnRad = 'tn-' + (len > 1 && !(['a','v','s'].includes(val)) ? 'v' : val); break;
+                case 'n': obj.tnRad = 'tn-' + (len > 1 && !(['a','v','s','R'].includes(val)) ? 'v' : val); break;
                 case 'N': obj.tnCh = val.split('').map(ch => parseInt(ch, 36)); break;
             }
 
             (obj.fp === undefined) ? obj.fp = 0 : null;
             (obj.vs === undefined) ? obj.vs = 0 : null;
             (obj.fm === undefined) ? obj.fm = 0 : null;
-            (obj.prRad === undefined) ? obj.prRad = 'pn-r' : null;
-            (obj.prCh === undefined) ? obj.prCh = [] : null;
+            (obj.prRad1 === undefined) ? obj.prRad1 = 'pn-r' : null;
+            (obj.prRad2 === undefined) ? obj.prRad2 = 0 : null;
             (obj.tnRad === undefined) ? obj.tnRad = 'tn-v' : null;
             (obj.tnCh === undefined) ? obj.tnCh = [] : null;
         }
@@ -57,15 +56,15 @@ export function decode(str) {
     }
 
 export const pronounArr = [
-    {pronoun: 'je',     formId: 1},
-    {pronoun: 'tu',     formId: 2},
-    {pronoun: 'il',     formId: 3, fm: 0},
-    {pronoun: 'on',     formId: 3, fm: 0},
-    {pronoun: 'elle',   formId: 3, fm: 1},
-    {pronoun: 'nous',   formId: 4},
-    {pronoun: 'vous',   formId: 5},
-    {pronoun: 'ils',    formId: 6, fm: 0},
-    {pronoun: 'elles',  formId: 6, fm: 1}
+    {pronoun: 'je',     formId: 1,          id: 1},
+    {pronoun: 'tu',     formId: 2,          id: 2},
+    {pronoun: 'il',     formId: 3, fm: 0,   id: 3},
+    {pronoun: 'on',     formId: 3, fm: 0,   id: 4},
+    {pronoun: 'elle',   formId: 3, fm: 1,   id: 5},
+    {pronoun: 'nous',   formId: 4,          id: 6},
+    {pronoun: 'vous',   formId: 5,          id: 7},
+    {pronoun: 'ils',    formId: 6, fm: 0,   id: 8},
+    {pronoun: 'elles',  formId: 6, fm: 1,   id: 9}
 ];
 
 export function getRandomElement(arr){
@@ -74,13 +73,13 @@ export function getRandomElement(arr){
 
 const defectiveVerbs = new Map([
     ['falloir', ['il']],
-    ['pleuvoir', ['il, ils']],
+    ['pleuvoir', ['il', 'ils']],
 ]);
 
 export function checkNotDefective(verb){ 
     // check if the verb is defective in the given form
-    const defective = defectiveVerbs.get(verb);
 
+    const defective = defectiveVerbs.get(verb);
     return defective ? pronounArr.filter(pr => defective.includes(pr.pronoun)) : pronounArr;
 };
 

@@ -1,12 +1,20 @@
 <template>
-    <PracticeComponent v-if="singleConj && !complete" @completed="showSolution" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
-    <SolutionComponent v-else-if="singleConj" :incorrect="completedIncorrect" :formData="completedAnswers" :conj="singleConj" :pronoun="pronoun"/>
+    <PracticeComponent v-if="validVerb === 'valid' && singleConj && !complete" @completed="showSolution" :options="decoded" :verb="verbIn" :conj="singleConj" :pronoun="pronoun"/>
+    <SolutionComponent v-else-if="validVerb === 'valid' && singleConj" :incorrect="completedIncorrect" :formData="completedAnswers" :conj="singleConj" :pronoun="pronoun"/>
+    <div v-else-if="validVerb === 'not-found'">
+        <VerbNotFound :verb="props.verbIn" />
+    </div>
+    <div v-else-if="validVerb === 'server-down'">
+        <ServerDown />
+    </div>
 </template>
 <script setup>
     import { decode, getRandomElement, checkNotDefective} from '@/utils/helper.js';
     import PracticeComponent from '@/components/PracticeComponent.vue';
     import { onMounted, ref } from 'vue';
     import SolutionComponent from '@/components/SolutionComponent.vue';
+    import VerbNotFound from '@/components/VerbNotFound.vue';
+    import ServerDown from '@/components/ServerDown.vue';
 
     const props = defineProps({
         verbIn: String,
@@ -23,14 +31,31 @@
     const completedAnswers = ref(null);
 
     let formId = 0;
-    let feminine = false;
+    let feminine = 0;
 
-    switch (decoded.prRad){
+    switch (decoded.prRad1){
         case 'pn-r':
             const random = getRandomElement(validPronouns);
             pronoun.value = random.pronoun;
             formId = random.formId;
             feminine = random.fm || decoded.fm;
+            break;
+        case 'pn-s':
+            const selected = decoded.prRad2;
+            const found = validPronouns.find(p => p.id === Number(selected));
+            if (found){
+                pronoun.value = found.pronoun;
+                formId = found.formId;
+                feminine = found.fm || decoded.fm;
+            }
+            else {
+                console.log(validPronouns);
+                const random = getRandomElement(validPronouns);
+                console.log(random);
+                pronoun.value = random.pronoun;
+                formId = random.formId;
+                feminine = random.fm || decoded.fm;
+            }    
             break;
         default:
             pronoun.value = 'je';
@@ -43,13 +68,13 @@
         try {
             const url = `http://localhost:8080/api/single/${v}/${formId}?fp=${fp}&vp=${Number(vs) ? 0 : 1}&fm=${fm}`;
             const res = await fetch(url);
-
-            if (!res.ok) {
+            const resData = await res.json();       
+            if (!resData.ok) {
                 validVerb.value = 'not-found';
                 return;
             }
             validVerb.value = 'valid';
-            singleConj.value = await res.json();
+            singleConj.value = resData.data;
         }
         catch {
             validVerb.value = 'server-down';

@@ -82,13 +82,13 @@
     try {
       const url = `http://localhost:8080/api/all/${v}?fp=${fp}`;
       const res = await fetch(url);
-
-      if (!res.ok) {
+      const resData = await res.json();
+      if (!resData.ok) {
         validVerb.value = 'not-found';
         return;
       }
       validVerb.value = 'valid';
-      data = await res.json();
+      data = resData.data;
     }
     catch {
       validVerb.value = 'server-down';

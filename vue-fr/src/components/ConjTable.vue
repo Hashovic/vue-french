@@ -4,7 +4,15 @@
         <div class="flex gap-4">
           <div>
             <div class="mt-7">
-              <div class="px-1 border-2 rounded-lg border-gray-300 dark:border-gray-200 font-bold text-right" >
+              <div v-if="title === 'Imperative'" class="pl-5.5 pr-2 border-2 rounded-lg border-gray-300 dark:border-gray-200 font-bold text-right" >
+                <div>---</div>
+                <div>(tu)</div>
+                <div>---</div>
+                <div>(nous)</div>
+                <div>(vous)</div>
+                <div>---</div>
+              </div>
+              <div v-else class="pl-1 pr-1.5 border-2 rounded-lg border-gray-300 dark:border-gray-200 font-bold text-right" >
                 <div>je</div>
                 <div>tu</div>
                 <div>il/elle/on</div>

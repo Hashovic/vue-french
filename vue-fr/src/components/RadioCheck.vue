@@ -1,6 +1,6 @@
 <template>
     <div class="rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600/10">
-        <div class="grid grid-rows-3 grid-flow-col">
+        <div class="grid grid-cols-4 grid-rows-4 grid-flow-col">
             <Radio 
                 v-for="(item, i) in radioList"
                 :key="i"
@@ -27,7 +27,7 @@
     </div>
 </template>
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
     import Radio from '@/components/Radio.vue';
     import Checkbox from '@/components/Checkbox.vue';
 
@@ -41,8 +41,14 @@
 
     const radioPicked = defineModel('radioPicked', { type: String });
     const checkPicked = defineModel('checkPicked', { type: Array });
-
     const shouldDisable = ref(props.radioList.length > 0 && props.radioList.find(rad => rad.id == radioPicked.value)?.allowsChecks ? false : true);
+
+    watch(radioPicked, (newVal) => {
+        if (!newVal){
+            shouldDisable.value = true;
+            checkPicked.value = [];
+        }
+    });
 
     function activate(label) {
         curRadio.value = props.radioList.find(item => item.label === label);

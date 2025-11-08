@@ -69,12 +69,11 @@ export const allTensesIdList = [
 ]
 
 export const allButRareTensesIdList = [
-    'present','imparfait','passe_simple',
-    'futur_simple','future_proche','passe_compose',
-    'plus_que_parfait','futur_anterieur',
-    'pres_subj','passe_subj',
-    'conditionnel','passe_conditionnel',
-    'imperatif'
+    'present','future_proche','imperatif',
+    'passe_compose','imparfait','pres_subj',
+    'futur_simple','conditionnel','plus_que_parfait',
+    'passe_subj','futur_anterieur','passe_simple',
+    'passe_conditionnel',
 ];
 
 export const tenseCheckList = ([

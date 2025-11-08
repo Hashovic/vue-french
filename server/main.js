@@ -12,7 +12,7 @@ app.get('/api/single/:verb/:formId', async (req, res) => {
     const { fm, vp, fp } = req.query;
 
     const form = await getSingleForm(verb, formId, fm, vp, fp);
-    res.json(form);
+    form.verb ? res.json({ok: true, data: form}) : res.json({ ok: false, error: 'Verb Does Not Exist'});
 });
 
 app.get('/api/all/:verb', async (req, res) => {
@@ -22,7 +22,7 @@ app.get('/api/all/:verb', async (req, res) => {
 
     const forms = await getAllForms(verb, +fp);
 
-    forms[2].verb ? res.json(forms) : res.status(404).json({ error: 'Verb Does Not Exist'});
+    forms[2].verb ? res.json({ok: true, data: forms}) : res.json({ok: false, error: 'Verb Does Not Exist'});
 });
 
 
