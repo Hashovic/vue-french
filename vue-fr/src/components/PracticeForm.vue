@@ -7,7 +7,7 @@
                 placeholder="Enter verb"
                 autocomplete="off"
                 spellcheck="false"
-                class="border-2 border-gray-300 p-2 rounded w-full mb-2"
+                class="border-2 border-gray-300 p-2 rounded w-7/24 outline-0 mb-2 focus:border-sky-500/60 focus:dark:border-amber-500 transition-colors duration-250" 
                 v-model="chosenVerb"
             >
             <div class="flex flex-col md:flex-row justify-between w-full lg:w-2/3">
@@ -34,16 +34,23 @@
                                 v-model:radioPicked2="chosenPronounRadio2"
                             />
                         </div>
-                        <div class="flex lg:mt-10 lg:pr-10 justify-center">
-                            <button type="submit" class="text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
-                                Start
-                            </button>
-                            <button 
-                                class="text-lg text-red-500 cursor-pointer hover:bg-red-600/20 border-1 border-red-500 rounded-lg px-5"
-                                @click.prevent="clearSelections"
-                            >
-                                Clear Selections
-                            </button>
+                        <div>
+                            <div class="flex lg:mt-10 lg:pr-10 justify-center">
+                                <button type="submit" class="text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
+                                    Start
+                                </button>
+                                <button @click.prevent="shareLottieRef.play()" class="flex justify-between text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
+                                    <span class="mr-2">Share</span>
+                                    <!-- <LottieComponent class="mt-[2px]" ref="shareLottieRef" :animation="iconJson" :size="24"/> -->
+                                </button>
+                            </div>
+                            <div class="flex lg:mt-4 ml-[18px] justify-left">
+                                <Modal v-model="modalToggle" button-text="Clear Selections" modal-title="Confirmation"
+                                    :modal-body="'Are you sure you want to clear your current selections? All selected options will be lost.'"
+                                    button-text-close="Cancel" button-text-confirm="Confirm" @clicked="modalToggle = true" @confirm="clearSelections"
+                                    :customButtonClasses="'text-lg text-red-500 cursor-pointer hover:bg-red-600/20 border-1 border-red-500 rounded-lg px-5'"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,6 +73,9 @@ import { ref } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
 import RadioCheck from '@/components/RadioCheck.vue';
 import RadioRadio from '@/components/RadioRadio.vue';
+import Modal from '@/components/Modal.vue';
+import LottieComponent from '@/components/LottieComponent.vue';
+import iconJson from '@/assets/lottie/icons8-share.json';
 import { useStorage } from '@vueuse/core';
 import { useRouter } from 'vue-router';
 import { encode } from '@/utils/helper.js';
@@ -73,6 +83,8 @@ import { allTensesIdList, allButRareTensesIdList, verbathonTenses, tenseCheckLis
 
 const router = useRouter();
 const defaultsCheckList = ref([{label: 'Vous Singular When Agreement', id: 'vs'}, {label: 'Assume Feminine Where Applicable', id:'fm'}, {label: 'Try Pronomial Form', id: 'fp'}]);
+const modalToggle = ref(false);
+const shareLottieRef = ref(null);
 
 const pronounRadioList1 = ref([
     { id: 'pn-r',   label: 'Random', allowsChoose: false },

@@ -5,14 +5,16 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hash Conj</title>
+    <style>
+      html { background-color: #ffffff; }
+      html.dark { background-color: #1E1E1E; }
+    </style>
     <script>
       const themeLocal = localStorage.getItem('vueuse-color-scheme');
       const isDark = (themeLocal === 'dark' || (!themeLocal && window.matchMedia('(prefers-color-scheme: dark)').matches));
       if (isDark) {
         document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      } 
     </script>
     <style>html.dark{background-color: #1E1E1E;}</style>
   </head>
