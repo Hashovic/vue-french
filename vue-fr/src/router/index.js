@@ -1,4 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { decode } from '@/utils/helper.js';
+import { tenseCheckList, verbathonTenses, allButRareTensesIdList, allTensesIdList } from '@/utils/tenseLists.js';
+import {
+    chosenDefaultsCheckList, chosenPronounRadio1, chosenPronounRadio2,
+    chosenTenseRadio, chosenTenseChecks, chosenVerb 
+} from '@/stores/preferences.js';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +41,44 @@ const router = createRouter({
         verbIn: route.params.verb,
         options: route.query.opt,
       }),
+    },
+    {
+      path: '/p/:verb/:options',
+      name: 'share',
+      beforeEnter(to) {
+        const decoded = decode(to.params.options);
+
+        const temp = [];
+        if(Object.hasOwn(decoded, 'fm')) temp.push('fm');
+        if(Object.hasOwn(decoded, 'fp')) temp.push('fp');
+        if(Object.hasOwn(decoded, 'vs')) temp.push('vs');
+        chosenDefaultsCheckList.value = temp;
+        
+        chosenPronounRadio1.value = Object.hasOwn(decoded, 'prRad1') ? decoded.prRad1 : '';
+        chosenPronounRadio2.value = Object.hasOwn(decoded, 'prRad2') ? decoded.prRad2 : '0';
+        chosenTenseRadio.value =    Object.hasOwn(decoded, 'tnRad') ? decoded.tnRad : '';
+        if(Object.hasOwn(decoded, 'tnCh')) {
+          switch (decoded.tnRad) {
+            case 'tn-v':
+                chosenTenseChecks.value = verbathonTenses; break;
+            case 'tn-a': 
+                chosenTenseChecks.value = allTensesIdList; break;
+            case 'tn-R':
+                chosenTenseChecks.value = allButRareTensesIdList; break;
+            case 'tn-s':
+                chosenTenseChecks.value = props.options.tnCh.map(x => tenseCheckList.find(y => y.shortId === x).id); break;
+            default:
+                chosenTenseChecks.value = []; break;
+          }
+        }
+        else chosenTenseChecks.value = [];
+
+        chosenVerb.value = to.params.verb;
+
+        return {
+          name: 'practice-home',
+        }
+      }
     },
   ],
 })

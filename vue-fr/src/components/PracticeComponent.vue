@@ -23,7 +23,7 @@
     </div>
 </template>
 <script setup>
-    import { verbathonTenses, allTensesIdList, tenseCheckList, secondaryEquivalents, imperatifEquivalents } from '@/utils/tenseLists';
+    import { verbathonTenses, allTensesIdList, allButRareTensesIdList, tenseCheckList, secondaryEquivalents, imperatifEquivalents } from '@/utils/tenseLists';
     import { checkImperatif } from '@/utils/helper';
     import PracticeUnit from '@/components/PracticeUnit.vue';
     import { ref, reactive } from 'vue';
@@ -54,6 +54,8 @@
             showOrder = verbathonTenses; break;
         case 'tn-a': 
             showOrder = allTensesIdList; break;
+        case 'tn-R':
+            showOrder = allButRareTensesIdList; break;
         case 'tn-s':
             showOrder = props.options.tnCh.map(x => tenseCheckList.find(y => y.shortId === x).id); break;
         default:

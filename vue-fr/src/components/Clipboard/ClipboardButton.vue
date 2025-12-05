@@ -1,6 +1,6 @@
 
 <template>
-  <button @click="copyAndAnimate" class="appearance-none p-2 bg-transparent outline-0 cursor-pointer rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700">
+  <button @click.prevent="copyAndAnimate" type="button" class="appearance-none p-2 bg-transparent outline-0 cursor-pointer rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700">
     <div class="relative w-4 h-4">
       <Clippy
         class="icon [stroke-dashoffset:0] dark:stroke-gray-200"

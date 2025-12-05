@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="practice-form" @submit.prevent="submitForm">
+        <form id="practice-form" @submit.prevent="submitForm(0)">
             <input
                 type="text"
                 id="verb-input"
@@ -35,20 +35,20 @@
                             />
                         </div>
                         <div>
-                            <div class="flex lg:mt-10 lg:pr-10 justify-center">
+                            <div class="flex lg:mt-10 lg:pr-6 justify-center">
                                 <button type="submit" class="text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
                                     Start
                                 </button>
-                                <button @click.prevent="shareLottieRef.play()" class="flex justify-between text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
+                                <!-- <button @click.prevent="shareLottieRef.play()" class="flex justify-between text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
                                     <span class="mr-2">Share</span>
-                                    <!-- <LottieComponent class="mt-[2px]" ref="shareLottieRef" :animation="iconJson" :size="24"/> -->
-                                </button>
-                            </div>
-                            <div class="flex lg:mt-4 ml-[18px] justify-left">
-                                <Modal v-model="modalToggle" button-text="Clear Selections" modal-title="Confirmation"
-                                    :modal-body="'Are you sure you want to clear your current selections? All selected options will be lost.'"
-                                    button-text-close="Cancel" button-text-confirm="Confirm" @clicked="modalToggle = true" @confirm="clearSelections"
-                                    :customButtonClasses="'text-lg text-red-500 cursor-pointer hover:bg-red-600/20 border-1 border-red-500 rounded-lg px-5'"
+                                    <LottieComponent class="mt-[2px]" ref="shareLottieRef" :animation="iconJson" :size="24"/>
+                                </button> -->
+                                <ClipboardModal
+                                    button-text="Share"
+                                    v-model="shareModalToggle"
+                                    @clicked="submitForm(1)"
+                                    modalTitle="Share this preset" :modalCopy="shareURL"
+                                    custom-button-classes="flex justify-between text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5"
                                 />
                             </div>
                         </div>
@@ -65,6 +65,13 @@
                     />
                 </div>
             </div>
+            <div class="flex lg:mt-4 justify-end">
+                <Modal v-model="modalToggle" button-text="Clear Selections" modal-title="Confirmation"
+                    :modal-body="'Are you sure you want to clear your current selections? All selected options will be lost.'"
+                    button-text-close="Cancel" button-text-confirm="Confirm" @clicked="modalToggle = true" @confirm="clearSelections"
+                    :customButtonClasses="'text-lg text-red-500 cursor-pointer hover:bg-red-600/20 border-1 border-red-500 rounded-lg px-5'"
+                />
+            </div>
         </form>
     </div>
 </template>
@@ -74,17 +81,20 @@ import Checkbox from '@/components/Checkbox.vue';
 import RadioCheck from '@/components/RadioCheck.vue';
 import RadioRadio from '@/components/RadioRadio.vue';
 import Modal from '@/components/Modal.vue';
-import LottieComponent from '@/components/LottieComponent.vue';
-import iconJson from '@/assets/lottie/icons8-share.json';
-import { useStorage } from '@vueuse/core';
 import { useRouter } from 'vue-router';
 import { encode } from '@/utils/helper.js';
 import { allTensesIdList, allButRareTensesIdList, verbathonTenses, tenseCheckList } from '@/utils/tenseLists';
+import ClipboardModal from './Clipboard/ClipboardModal.vue';
+import {
+    chosenDefaultsCheckList, chosenPronounRadio1, chosenPronounRadio2,
+    chosenTenseRadio, chosenTenseChecks, chosenVerb, clearSelections 
+} from '@/stores/preferences.js';
 
 const router = useRouter();
 const defaultsCheckList = ref([{label: 'Vous Singular When Agreement', id: 'vs'}, {label: 'Assume Feminine Where Applicable', id:'fm'}, {label: 'Try Pronomial Form', id: 'fp'}]);
 const modalToggle = ref(false);
-const shareLottieRef = ref(null);
+const shareModalToggle = ref(false);
+const shareURL = ref('');
 
 const pronounRadioList1 = ref([
     { id: 'pn-r',   label: 'Random', allowsChoose: false },
@@ -110,23 +120,7 @@ const tenseRadioList = ref([
     { id: 'tn-s',   label: 'Select',            allowsChecks: true }
 ]);
 
-const chosenDefaultsCheckList = useStorage('chosen-defaults-checklist', []);
-const chosenPronounRadio1 = useStorage('chosen-pronoun-radio-1', '');
-const chosenPronounRadio2 = useStorage('chosen-pronoun-radio-2', '');
-const chosenTenseRadio = useStorage('chosen-tense-radio', '');
-const chosenTenseChecks = useStorage('chosen-tense-checks', []);
-const chosenVerb = useStorage('chosen-verb', '');
-
-const clearSelections = () => {
-    chosenDefaultsCheckList.value = [];
-    chosenPronounRadio1.value = '';
-    chosenPronounRadio2.value = '';
-    chosenTenseRadio.value = '';
-    chosenTenseChecks.value = [];
-    chosenVerb.value = '';
-};
-
-const submitForm = () => {
+const submitForm = (isShare=0) => {
     const res = chosenVerb.value.trim();
     
     if (!res.length || !chosenPronounRadio1.value.length || !chosenTenseRadio.value.length) {
@@ -155,11 +149,25 @@ const submitForm = () => {
         tnCh:   chosenTenseChecks.value.map(t => tenseCheckList.find(item => item.id === t)?.shortId)
     }
 
-    router.push({
-        name: 'practice',
-        params: { verb: match.groups.verb },
-        query: { opt: encode(options) }
-    });
+    if (isShare) {
+        const routeLocation = router.resolve({
+            name: 'share',
+            params: {
+                verb: match.groups.verb,
+                options: encode(options)
+            },
+        });
+
+        shareURL.value = window.location.origin + routeLocation.href;
+        shareModalToggle.value = true;
+    }
+    else{
+        router.push({
+            name: 'practice',
+            params: { verb: match.groups.verb },
+            query: { opt: encode(options) }
+        });
+    }
 };
 
 </script>1

@@ -14,7 +14,7 @@ export function encode(obj) {
 
     tmp = obj.tnRad.replace("tn-", "");
     str += "n" + tmp;
-    str += "N" + ((tmp === 'a' || tmp === 'v' || tmp === 'R') ? '' : obj.tnCh.map(n => n.toString(36)).join("").toUpperCase());
+    str += "N" + ((tmp === 'a' || tmp === 'v' || tmp === 'R') ? '' : obj.tnCh.map(n => n.toString(36)).sort().join("").toUpperCase());
 
     return str;
 }
@@ -38,7 +38,7 @@ export function decode(str) {
                 })
 
                 case 'p': obj.prRad1 = 'pn-' + (len > 1 && !(['r','s'].includes(val)) ? 'r' : val); break;
-                case 'P': obj.prRad2 = parseInt(val); break;
+                case 'P': obj.prRad2 = val; break;
 
                 case 'n': obj.tnRad = 'tn-' + (len > 1 && !(['a','v','s','R'].includes(val)) ? 'v' : val); break;
                 case 'N': obj.tnCh = val.split('').map(ch => parseInt(ch, 36)); break;
@@ -48,7 +48,7 @@ export function decode(str) {
             (obj.vs === undefined) ? obj.vs = 0 : null;
             (obj.fm === undefined) ? obj.fm = 0 : null;
             (obj.prRad1 === undefined) ? obj.prRad1 = 'pn-r' : null;
-            (obj.prRad2 === undefined) ? obj.prRad2 = 0 : null;
+            (obj.prRad2 === undefined) ? obj.prRad2 = '0' : null;
             (obj.tnRad === undefined) ? obj.tnRad = 'tn-v' : null;
             (obj.tnCh === undefined) ? obj.tnCh = [] : null;
         }
