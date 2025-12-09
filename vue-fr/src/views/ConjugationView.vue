@@ -15,16 +15,22 @@
           </RouterLink>
           <h3 v-else class="text-lg mr-4 text-gray-300 dark:text-gray-600"><span class="font-medium">Pronomial</span></h3>     
         </div>
-        
+        <div class="mr-4">
+          <RouterLink v-if="conjugations.length > 0" v-slot="{ navigate }" :to="{name: 'practice-home'}">
+            <h3 @click="() => {updatePracticeVerb(); navigate();}" class="text-lg dark:text-amber-500 text-sky-700 dark:hover:text-fuchsia-600 hover:text-amber-500">
+              <span class="font-medium">Practice</span>
+            </h3>
+          </RouterLink>
+        </div>
       </div>
       <div class="w-1/6 flex justify-left sm:justify-end items-center">
         <div @click="toggleRare()" class="cursor-pointer rounded-full">
-        <svg v-if="!useRare" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
+          <svg v-if="!useRare" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
         </div>
       </div>
     </div>
@@ -60,6 +66,7 @@
   import ServerDown from '@/components/ServerDown.vue';
   import SearchBar from '@/components/ConjSearchBar.vue';
   import { tenses, rareTenses, secondaryEquivalents } from '@/utils/tenseLists.js';
+  import { chosenVerb, chosenDefaultsCheckList } from '@/stores/preferences';
 
   const props = defineProps({
     verbIn: String,
@@ -103,6 +110,11 @@
     past_participle_ref.value = past_participle;
     reflexivity_ref.value = (reflexivity === 'pnr' || reflexivity === 'pr');
     conjugations.value = data;
+  }
+
+  function updatePracticeVerb() {
+    chosenVerb.value = verb_ref.value;
+    if(props.forcePronomial != '0' && !chosenDefaultsCheckList.value.includes('fp')) chosenDefaultsCheckList.value.push('fp');
   }
 
   onMounted(() => {

@@ -41,7 +41,7 @@
             <!-- Body -->
             <div class="p-4">
                 <div class="flex justify-evenly text-gray-800 dark:text-neutral-400">
-                  <div class="w-full appearance-none p-2 bg-transparent outline-0 rounded-lg border-2 border-gray-300 dark:border-gray-600 overflow-ellipsis truncate">{{ modalCopy }}</div>
+                  <div class="w-full appearance-none p-2 bg-transparent outline-0 rounded-lg border-2 border-gray-300 dark:border-gray-600 break-all">{{ modalCopy }}</div>
                   <ClipboardButton class="ml-4" :text="modalCopy" />
                 </div>
             </div>
