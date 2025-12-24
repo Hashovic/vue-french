@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {getSingleForm, getAllForms} from './database.js';
+import {getSingleForm, getAllForms, getAutocomplete} from './database.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -25,6 +25,13 @@ app.get('/api/all/:verb', async (req, res) => {
     forms[2].verb ? res.json({ok: true, data: forms}) : res.json({ok: false, error: 'Verb Does Not Exist'});
 });
 
+app.get('/api/autocomplete/:term', async (req, res) => {
+    const { term } = req.params;    
+    
+    const verb_list = await getAutocomplete(term);
+
+    res.json(verb_list);
+});
 
 app.use((err, req, res, next) => {
   res.status(500).json({error: 'Something broke on our end!'});

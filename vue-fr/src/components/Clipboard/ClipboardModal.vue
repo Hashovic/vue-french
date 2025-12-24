@@ -62,54 +62,49 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue';
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import ClipboardButton from './ClipboardButton.vue';
+    import { ref, watch, nextTick } from 'vue';
+    import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+    import ClipboardButton from './ClipboardButton.vue';
 
-const modalRef = ref(null);
-const emit = defineEmits(['clicked']);
+    const modalRef = ref(null);
+    const emit = defineEmits(['clicked']);
 
-const isOpen = defineModel({default: false});
+    const isOpen = defineModel({default: false});
 
-defineProps({
-  buttonText: {
-    type: String,
-    default: 'Open Modal'
-  },
-  modalTitle: {
-    type: String,
-    default: 'Modal Title'
-  },
-  modalCopy: {
-    type: String,
-    default: 'https://example.com'
-  },
-  buttonTextClose: {
-    type: String,
-    default: 'Close'
-  },
-  customButtonClasses: {
-    type: String,
-    default: ''
-  }
-})
+    defineProps({
+    buttonText: {
+        type: String,
+        default: 'Open Modal'
+    },
+    modalTitle: {
+        type: String,
+        default: 'Modal Title'
+    },
+    modalCopy: {
+        type: String,
+        default: 'https://example.com'
+    },
+    buttonTextClose: {
+        type: String,
+        default: 'Close'
+    },
+    customButtonClasses: {
+        type: String,
+        default: ''
+    }
+    })
 
-const { activate, deactivate } = useFocusTrap(modalRef, {
-  escapeDeactivates: true,
-  allowOutsideClick: true,
-  onDeactivate: () => isOpen.value = false,
-})
+    const { activate, deactivate } = useFocusTrap(modalRef, {
+        escapeDeactivates: true,
+        allowOutsideClick: true,
+        onDeactivate: () => isOpen.value = false,
+    })
 
-watch(isOpen, async (open) => {
-  if (open){
-    await nextTick();
-    activate()
-}
-  else deactivate()
-})
-
-function handleConfirm() {
-  emit('confirm');
-  isOpen.value = false
-}
+    watch(isOpen, async (open) => {
+    if (open){
+        await nextTick();
+        activate()
+    }
+    else deactivate()
+    })
 </script>

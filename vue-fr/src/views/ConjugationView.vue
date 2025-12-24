@@ -13,7 +13,7 @@
               <span class="font-medium">Pronomial</span>
             </h3>
           </RouterLink>
-          <h3 v-else class="text-lg mr-4 text-gray-300 dark:text-gray-600"><span class="font-medium">Pronomial</span></h3>     
+          <h3 v-else class="text-lg text-gray-300 dark:text-gray-600"><span class="font-medium">Pronomial</span></h3>     
         </div>
         <div class="mr-4">
           <RouterLink v-if="conjugations.length > 0" v-slot="{ navigate }" :to="{name: 'practice-home'}">

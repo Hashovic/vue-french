@@ -3,7 +3,8 @@
         <h2 class="text-4xl font-light "><span class="font-medium text-sky-700 dark:text-amber-500">Verb: </span>{{ conj.verb }}</h2>
         <div class="flex flex-row pb-3">
             <div class="w-5/6 flex flex-col sm:flex-row ml-2">
-                <h3 class="text-xl mr-4"><span class="font-medium">Translation: </span>{{ conj.translation }}</h3>
+                <h3 class="text-xl mr-4 max-w-75 truncate"><span class="font-medium">Translation: </span>{{ conj.translation }}</h3>
+                <h3 v-if="options.cl === 1" class="text-xl mr-4"><span class="font-medium">Conjugates Like: </span>{{ conj.conj_like }}</h3>
                 <h3 class="text-xl mr-4"><span class="font-medium">Pronoun: </span><span class="text-sky-700 dark:text-amber-500">{{ pronoun }}</span></h3>
             </div>
         </div>

@@ -1,11 +1,11 @@
 <script setup>
 import Modal from '@/components/Modal.vue';
-import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
-import LottieComponent from '@/components/LottieComponent.vue';
 import { ref } from 'vue';
-import iconJson from '@/assets/lottie/icons8-share.json';
 import ClipboardButton from '@/components/Clipboard/ClipboardButton.vue';
 import ClipboardModal from '@/components/Clipboard/ClipboardModal.vue';
+// import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
+// import LottieComponent from '@/components/LottieComponent.vue';
+// import iconJson from '@/assets/lottie/icons8-share.json';
 
 const modT = ref(false);
 const modC = ref(false);

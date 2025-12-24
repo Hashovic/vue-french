@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="grid grid-rows-[1fr_2fr_2fr] gap-5">
-                <div class="flex flex-col justify-between border-1 text-6xl text-center border-gray-500/60 dark:border-gray-400/80 rounded-lg px-2 pt-5 pb-7 my-2">
+                <div class="flex flex-col justify-between border-1 bg-gray-600/10 text-7xl text-center border-gray-500/60 dark:border-gray-400/80 rounded-lg px-2 pt-5 pb-7 my-2">
                     <div>
                         {{ (totalCount - incorrectCount) / totalCount * 100 | 0 }}%
                     </div>
@@ -28,7 +28,7 @@
                     </div>
                     
                 </div>
-                <div class="border-1 border-gray-500/60 dark:border-gray-400/80 rounded-lg p-2 mb-2">
+                <div class="border-1 bg-gray-600/10 border-gray-500/60 dark:border-gray-400/80 rounded-lg p-2 mb-2">
                     OTHER BIG BOX
                 </div>
             </div>

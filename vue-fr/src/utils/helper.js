@@ -7,6 +7,7 @@ export function encode(obj) {
     obj.vs ? str += "1" : null;
     obj.fm ? str += "2" : null;
     obj.fp ? str += "3" : null;
+    obj.cl ? str += "4" : null;
 
     tmp = obj.prRad1.replace("pn-", "");
     str += "p" + tmp;
@@ -35,6 +36,7 @@ export function decode(str) {
                     if (ch === '1') obj.vs = 1;
                     if (ch === '2') obj.fm = 1;
                     if (ch === '3') obj.fp = 1;
+                    if (ch === '4') obj.cl = 1;
                 })
 
                 case 'p': obj.prRad1 = 'pn-' + (len > 1 && !(['r','s'].includes(val)) ? 'r' : val); break;
@@ -47,6 +49,7 @@ export function decode(str) {
             (obj.fp === undefined) ? obj.fp = 0 : null;
             (obj.vs === undefined) ? obj.vs = 0 : null;
             (obj.fm === undefined) ? obj.fm = 0 : null;
+            (obj.cl === undefined) ? obj.cl = 0 : null;
             (obj.prRad1 === undefined) ? obj.prRad1 = 'pn-r' : null;
             (obj.prRad2 === undefined) ? obj.prRad2 = '0' : null;
             (obj.tnRad === undefined) ? obj.tnRad = 'tn-v' : null;
@@ -126,4 +129,32 @@ export const frenchAccentMap = {
   "U:": "Ü",
   "Y:": "Ÿ",
   "C,": "Ç"
+}
+
+export const normalizeVerbInput = (input) => {
+    const res = input
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ');
+
+    const pronominalMatch = /^(se\s+|s['`])(.+)/i.exec(res);
+
+    if (pronominalMatch) {
+        return {
+            verb: pronominalMatch[2].split(' ')[0],
+            forcePronomial: 1
+        };
+    }
+
+    return {
+        verb: res.split(' ')[0],
+        forcePronomial: 0
+    };
+};
+
+export const normalizeAccent = (str) => {
+    return str
+        .normalize('NFD')           // split letters + accents
+        .replace(/\p{Diacritic}/gu, '') // remove accents
+        .toLowerCase();
 }

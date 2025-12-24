@@ -21,3 +21,8 @@ export async function getAllForms(verb, forcePronomial) {
 
     return rows;
 }
+
+export async function getAutocomplete(searchTerm) {
+    const [[rows]] = await pool.query("CALL get_autocomplete_verbs(?)", [searchTerm]);
+    return rows;
+}

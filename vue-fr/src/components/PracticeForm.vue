@@ -10,7 +10,7 @@
                 class="border-2 border-gray-300 p-2 rounded w-7/24 outline-0 mb-2 focus:border-sky-500/60 focus:dark:border-amber-500 transition-colors duration-250" 
                 v-model="chosenVerb"
             >
-            <div class="flex flex-col md:flex-row justify-between w-full lg:w-2/3">
+            <div class="flex flex-col md:flex-row justify-between w-full lg:w-7/8 appearance-none">
                 <Checkbox
                     v-for="(item, i) in defaultsCheckList"
                     :key="i"
@@ -39,10 +39,6 @@
                                 <button type="submit" class="text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
                                     Start
                                 </button>
-                                <!-- <button @click.prevent="shareLottieRef.play()" class="flex justify-between text-lg cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600/80 border-1 border-gray-400 dark:border-gray-200 rounded-lg px-5 mr-10">
-                                    <span class="mr-2">Share</span>
-                                    <LottieComponent class="mt-[2px]" ref="shareLottieRef" :animation="iconJson" :size="24"/>
-                                </button> -->
                                 <ClipboardModal
                                     button-text="Share"
                                     v-model="shareModalToggle"
@@ -82,7 +78,7 @@ import RadioCheck from '@/components/RadioCheck.vue';
 import RadioRadio from '@/components/RadioRadio.vue';
 import Modal from '@/components/Modal.vue';
 import { useRouter } from 'vue-router';
-import { encode } from '@/utils/helper.js';
+import { encode, normalizeVerbInput } from '@/utils/helper.js';
 import { allTensesIdList, allButRareTensesIdList, verbathonTenses, tenseCheckList } from '@/utils/tenseLists';
 import ClipboardModal from './Clipboard/ClipboardModal.vue';
 import {
@@ -91,7 +87,12 @@ import {
 } from '@/stores/preferences.js';
 
 const router = useRouter();
-const defaultsCheckList = ref([{label: 'Vous Singular When Agreement', id: 'vs'}, {label: 'Assume Feminine Where Applicable', id:'fm'}, {label: 'Try Pronomial Form', id: 'fp'}]);
+const defaultsCheckList = ref([
+    {label: 'Vous Singular When Agreement', id: 'vs'},
+    {label: 'Assume Feminine Where Applicable', id:'fm'},
+    {label: 'Try Pronomial Form', id: 'fp'},
+    {label: 'Show Conjugated-Like', id: 'cl'}
+]);
 const modalToggle = ref(false);
 const shareModalToggle = ref(false);
 const shareURL = ref('');
@@ -121,9 +122,9 @@ const tenseRadioList = ref([
 ]);
 
 const submitForm = (isShare=0) => {
-    const res = chosenVerb.value.trim();
+    const res = normalizeVerbInput(chosenVerb.value);
     
-    if (!res.length || !chosenPronounRadio1.value.length || !chosenTenseRadio.value.length) {
+    if (!res.verb.length || !chosenPronounRadio1.value.length || !chosenTenseRadio.value.length) {
         alert('Please fill out all informtion');
         return;
     }
@@ -138,11 +139,11 @@ const submitForm = (isShare=0) => {
         return;
     }
 
-    const match = res.match(/^(se\s+|s\')?\s*(?<verb>\w+)/i);
     const options = {
-        fp:     res.match(/^(se\s|s\')/i) ? 1 : 0 || chosenDefaultsCheckList.value.includes('fp') ? 1 : 0,
+        fp:     res.fp || chosenDefaultsCheckList.value.includes('fp') ? 1 : 0,
         vs:     chosenDefaultsCheckList.value.includes('vs') ? 1 : 0,
         fm:     chosenDefaultsCheckList.value.includes('fm') ? 1 : 0,
+        cl:     chosenDefaultsCheckList.value.includes('cl') ? 1 : 0,
         prRad1: chosenPronounRadio1.value,
         prRad2: chosenPronounRadio2.value,
         tnRad:  chosenTenseRadio.value,
@@ -153,7 +154,7 @@ const submitForm = (isShare=0) => {
         const routeLocation = router.resolve({
             name: 'share',
             params: {
-                verb: match.groups.verb,
+                verb: res.verb,
                 options: encode(options)
             },
         });
@@ -164,7 +165,7 @@ const submitForm = (isShare=0) => {
     else{
         router.push({
             name: 'practice',
-            params: { verb: match.groups.verb },
+            params: { verb: res.verb },
             query: { opt: encode(options) }
         });
     }
