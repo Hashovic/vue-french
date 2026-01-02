@@ -32,7 +32,7 @@
 </template>
 <script setup>
     import { tenseCheckList } from '@/utils/tenseLists';
-    import { frenchAccentMap, checkImperatif } from '@/utils/helper';
+    import { frenchAccentMap, checkImperatif, normalizeAccent } from '@/utils/helper';
     import { ref, watch } from 'vue';
     
     const props = defineProps({
@@ -48,7 +48,7 @@
     watch(() => props.ans.primary, (newV, oldV) => {
         if(props.pronoun !== 'je' || props.ans.primary === null || (newV?.[0] === oldV?.[0])) return;
 
-        if ("aeiou".includes(newV[0]?.toLowerCase())) {
+        if ("aeiou".includes(normalizeAccent(newV[0]))) {
             childPronoun.value = "j'";
             return;
         }

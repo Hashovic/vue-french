@@ -46,15 +46,18 @@ export function decode(str) {
                 case 'N': obj.tnCh = val.split('').map(ch => parseInt(ch, 36)); break;
             }
 
-            (obj.fp === undefined) ? obj.fp = 0 : null;
-            (obj.vs === undefined) ? obj.vs = 0 : null;
-            (obj.fm === undefined) ? obj.fm = 0 : null;
-            (obj.cl === undefined) ? obj.cl = 0 : null;
-            (obj.prRad1 === undefined) ? obj.prRad1 = 'pn-r' : null;
-            (obj.prRad2 === undefined) ? obj.prRad2 = '0' : null;
-            (obj.tnRad === undefined) ? obj.tnRad = 'tn-v' : null;
-            (obj.tnCh === undefined) ? obj.tnCh = [] : null;
+            if (obj.fp === undefined) obj.fp = 0;
+            if (obj.vs === undefined) obj.vs = 0;
+            if (obj.fm === undefined) obj.fm = 0;
+            if (obj.cl === undefined) obj.cl = 0;
+            if (obj.prRad1 === undefined) obj.prRad1 = 'pn-r';
+            if (obj.prRad2 === undefined) obj.prRad2 = '0';
+            if (obj.tnRad === undefined) obj.tnRad = 'tn-v';
+            if (obj.tnCh === undefined) obj.tnCh = [];
+
         }
+        // Deals with case where URL doesn't give any tenses
+        if (obj.tnRad === 'tn-s' && !obj.tnCh?.length) obj.tnRad = 'tn-v'
         return obj;
     }
 
@@ -131,6 +134,26 @@ export const frenchAccentMap = {
   "C,": "Ç"
 }
 
+export function handleInput(event, updateModel) {
+    const el = event.target
+    const pos = el.selectionStart
+    const before = el.value.slice(0, pos)
+    const after = el.value.slice(pos)
+
+    for(const [pattern, replacement] of Object.entries(frenchAccentMap)){
+        if (before.endsWith(pattern)) {
+            const newVal = before.slice(0, -2) + replacement + after
+            updateModel(newVal);
+            // put cursor right after the inserted character
+            requestAnimationFrame(() => {
+                el.selectionStart = el.selectionEnd = pos - 1
+            })
+
+            return;
+        }
+    }
+}
+
 export const normalizeVerbInput = (input) => {
     const res = input
         .toLowerCase()
@@ -157,4 +180,18 @@ export const normalizeAccent = (str) => {
         .normalize('NFD')           // split letters + accents
         .replace(/\p{Diacritic}/gu, '') // remove accents
         .toLowerCase();
+}
+
+// Get the autocompleted verbs from the server
+export async function getAutocomplete(searchTerm) {
+    try{
+        const res = await fetch(`http://localhost:8080/api/autocomplete/${searchTerm}`);
+
+        if (!res.ok) return [];
+
+        return await res.json();
+    }
+    catch {
+        return [];
+    }
 }

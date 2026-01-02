@@ -1,8 +1,8 @@
 <template>
     <div class="w-full sm:w-1/2 lg:w-1/3 mb-4">
-        <p>{{ description ?? 'Search:' }}</p>
+        <!-- <p>{{ description ?? 'Search:' }}</p> -->
         <form
-            @submit.prevent="selectVerb(search)"
+            @submit.prevent="selectVerb()"
         >
             <input
                 type="text"
@@ -11,21 +11,20 @@
                 placeholder="Enter a verb to conjugate"
                 class="border-2 border-gray-300 p-2 rounded w-full"
                 v-model="search"
-                @mouseenter="focusInput"
                 @focus="hasFocus = true"
                 @blur="hasFocus = false"
                 @keydown="onKeyDown"
                 @input="handleInput"
             >
         </form>
-        <ul v-if="hasFocus" class="rounded-lg absolute bg-[#eeeeee] dark:bg-gray-800 w-36 text-md">
+        <ul v-if="hasFocus" class="z-10 rounded-lg absolute bg-[#eeeeee] dark:bg-gray-800 w-36 text-md">
             <RouterLink 
                 v-for="(vb, i) in computedList" 
                 class="block"
                 :class="{'bg-gray-300 dark:bg-gray-700 rounded-lg': (i === highlightIndex)}"
                 :key="vb"
                 @mouseenter="highlightIndex = i; usedMouse = true"
-                @mousedown.prevent="selectVerb(vb)"
+                @mousedown.prevent="selectVerb()"
                 :to="{name: 'conjugation', params: {verb: vb}}"
             >
                 <li class="py-1 pl-2">
@@ -37,13 +36,13 @@
 </template>
 <script setup>
     import { ref, computed, watch } from 'vue';
-    import { useRouter, useRoute } from 'vue-router';
-    import { normalizeVerbInput, normalizeAccent, getAutocomplete } from '@/utils/helper.js';
+    import { useRoute } from 'vue-router';
+    import { normalizeAccent, getAutocomplete } from '@/utils/helper.js';
 
     const props = defineProps({description: String});
-    const router = useRouter();
+    const model = defineModel();
     const route = useRoute();
-    const search = ref('');
+    const search = ref(model.value);
     const autoVerbList = ref([]);
     const hasFocus = ref(false);
     const highlightIndex = ref(-1);
@@ -63,10 +62,14 @@
         return [];
     });
 
+    // Watches the model value in case it changes making it the new source of truth
+    watch(() => model.value, () => {
+        search.value = model.value;
+        currentInput.value = search.value;
+    })
+
     // Resets the highlight index when the list changes
     watch(() => computedList.value, () => highlightIndex.value = -1);
-
-    const focusInput = () => inputRef.value?.focus();
 
     // After a key press in the input statement, checks whether or not anything is needed for the dropdown
     function onKeyDown(e){
@@ -105,7 +108,7 @@
     })
 
     // Checks whether a new autocomplete is needed or if current cache is good
-    watch(() => search.value, async (newTerm, oldTerm, onCleanup) => {
+    watch(() => currentInput.value, async (newTerm, oldTerm, onCleanup) => {
         let cancelled = false;
         const normalizedNew = normalizeAccent(newTerm);
         const normalizedOld = normalizeAccent(oldTerm);
@@ -123,22 +126,12 @@
     // Reset search value when new route is visited
     watch(() => route.fullPath,() => search.value = '');
 
-    // Goes to the route with the selected verb
-    const selectVerb = (vb) => {
-        if(!vb.trim()) return
-
-        const {verb, forcePronomial } = normalizeVerbInput(vb);
-
-        hasFocus.value = false;
+    // Sets the current value of the search bar to the model and currentInput
+    const selectVerb = () => {
+        model.value = search.value;
+        inputRef.value?.blur();
         highlightIndex.value = -1;
-        search.value = '';
-        currentInput.value = '';
-
-        router.push({
-            name: 'conjugation',
-            params: { verb },
-            query: { fp: forcePronomial }
-        });
+        currentInput.value = search.value;
     }
 
 </script>

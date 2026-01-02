@@ -1,16 +1,8 @@
 <template>
     <div>
         <form id="practice-form" @submit.prevent="submitForm(0)">
-            <input
-                type="text"
-                id="verb-input"
-                placeholder="Enter verb"
-                autocomplete="off"
-                spellcheck="false"
-                class="border-2 border-gray-300 p-2 rounded w-7/24 outline-0 mb-2 focus:border-sky-500/60 focus:dark:border-amber-500 transition-colors duration-250" 
-                v-model="chosenVerb"
-            >
-            <div class="flex flex-col md:flex-row justify-between w-full lg:w-7/8 appearance-none">
+            <PracticeSearchBar v-model="chosenVerb" />
+            <div class="isolate flex flex-col md:flex-row justify-between w-full lg:w-7/8 appearance-none">
                 <Checkbox
                     v-for="(item, i) in defaultsCheckList"
                     :key="i"
@@ -23,7 +15,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-7 gap-2 gap-y-4 mb-4">
                 <div class="col-span-2">
                     <div class="grid-rows-[6fr_1fr] grid-flow-col h-full">
-                        <div>
+                        <div class="isolate">
                             <h3 class="text-lg mb-1">Pronoun(s):</h3>
                             <RadioRadio
                                 :radioList1="pronounRadioList1"
@@ -50,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="lg:col-span-5">
+                <div class="lg:col-span-5 isolate">
                     <h3 class="text-lg mb-1">Tense(s):</h3>
                     <RadioCheck
                         :radioList="tenseRadioList"
@@ -76,11 +68,12 @@ import { ref } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
 import RadioCheck from '@/components/RadioCheck.vue';
 import RadioRadio from '@/components/RadioRadio.vue';
-import Modal from '@/components/Modal.vue';
+import Modal from '@/components/Modals/Modal.vue';
 import { useRouter } from 'vue-router';
 import { encode, normalizeVerbInput } from '@/utils/helper.js';
 import { allTensesIdList, allButRareTensesIdList, verbathonTenses, tenseCheckList } from '@/utils/tenseLists';
 import ClipboardModal from './Clipboard/ClipboardModal.vue';
+import PracticeSearchBar from './PracticeSearchBar.vue';
 import {
     chosenDefaultsCheckList, chosenPronounRadio1, chosenPronounRadio2,
     chosenTenseRadio, chosenTenseChecks, chosenVerb, clearSelections 

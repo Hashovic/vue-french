@@ -1,12 +1,100 @@
 <template>
     <div v-if="conj" class="w-5/8 mx-auto">
-        <h2 class="text-4xl font-light "><span class="font-medium text-sky-700 dark:text-amber-500">Verb: </span>{{ conj.verb }}</h2>
-        <div class="flex flex-row pb-3">
+        <div class="flex justify-between">
+            <h2 class="text-4xl font-light "><span class="font-medium text-sky-700 dark:text-amber-500">Verb: </span>{{ conj.verb }}</h2>
+        </div>
+        <div class="flex justify-between pb-3">
             <div class="w-5/6 flex flex-col sm:flex-row ml-2">
                 <h3 class="text-xl mr-4 max-w-75 truncate"><span class="font-medium">Translation: </span>{{ conj.translation }}</h3>
                 <h3 v-if="options.cl === 1" class="text-xl mr-4"><span class="font-medium">Conjugates Like: </span>{{ conj.conj_like }}</h3>
                 <h3 class="text-xl mr-4"><span class="font-medium">Pronoun: </span><span class="text-sky-700 dark:text-amber-500">{{ pronoun }}</span></h3>
             </div>
+            <IconModal modal-title="Accent Reference (Quick Guide)" >
+                <div class="">
+                    <p class="text-base/7 border-b border-gray-300 dark:border-gray-700 mb-4 pb-4">
+                        You can type French accents by typing a
+                        <span class="font-semibold">letter</span> followed by an
+                        <span class="font-semibold">accent symbol</span>.
+                        The two characters are replaced by the accented letter.
+                    </p>
+                    <!-- Acute -->
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                        Acute Accent (<span class="font-mono">/</span>)
+                        </h3>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">e + /</span> → <span class="font-semibold">é</span></li>
+                        <li><span class="font-mono">E + /</span> → <span class="font-semibold">É</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Grave -->
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                        Grave Accent (<span class="font-mono">`</span> or <span class="font-mono">\</span>)
+                        </h3>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">a + `</span> → <span class="font-semibold">à</span></li>
+                        <li><span class="font-mono">e + `</span> → <span class="font-semibold">è</span></li>
+                        <li><span class="font-mono">u + `</span> → <span class="font-semibold">ù</span></li>
+                        </ul>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">A + `</span> → <span class="font-semibold">À</span></li>
+                        <li><span class="font-mono">E + `</span> → <span class="font-semibold">È</span></li>
+                        <li><span class="font-mono">U + `</span> → <span class="font-semibold">Ù</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Circumflex -->
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                        Circumflex (<span class="font-mono">^</span>)
+                        </h3>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">a + ^</span> → <span class="font-semibold">â</span></li>
+                        <li><span class="font-mono">e + ^</span> → <span class="font-semibold">ê</span></li>
+                        <li><span class="font-mono">i + ^</span> → <span class="font-semibold">î</span></li>
+                        <li><span class="font-mono">o + ^</span> → <span class="font-semibold">ô</span></li>
+                        <li><span class="font-mono">u + ^</span> → <span class="font-semibold">û</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Diaeresis -->
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                        Diaeresis (<span class="font-mono">:</span>)
+                        </h3>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">e + :</span> → <span class="font-semibold">ë</span></li>
+                        <li><span class="font-mono">i + :</span> → <span class="font-semibold">ï</span></li>
+                        <li><span class="font-mono">u + :</span> → <span class="font-semibold">ü</span></li>
+                        <li><span class="font-mono">y + :</span> → <span class="font-semibold">ÿ</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Cedilla -->
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                        Cedilla (<span class="font-mono">,</span>)
+                        </h3>
+                        <ul class="mt-2 space-y-1 text-sm">
+                        <li><span class="font-mono">c + ,</span> → <span class="font-semibold">ç</span></li>
+                        <li><span class="font-mono">C + ,</span> → <span class="font-semibold">Ç</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule -->
+                    <div class="pt-4 border-t border-gray-300 dark:border-gray-700">
+                        <p class="text-base font-semibold">
+                        Rule to remember:
+                        </p>
+                        <p class="text-base">
+                        <span class="font-mono">letter + symbol</span> =
+                        <span class="font-semibold">accented letter</span>
+                        </p>
+                    </div>
+                </div>
+            </IconModal>
         </div>
         <form v-if="conj" @submit.prevent="checkCompleted" class="grid grid-cols-1 py-1 gap-y-2">
             <PracticeUnit
@@ -16,10 +104,11 @@
                 :has-secondary="checkSecondary(tense) ? true : false"
                 :pronoun="pronoun"
             />
-             <Modal v-model="modalToggle" button-text="Submit Answers" modal-title="Confirmation"
+            <TutorialModal v-model="needTutorial" />
+            <Modal v-model="modalToggle" button-text="Submit Answers" modal-title="Confirmation"
                 :modal-body="modalMsg"
                 button-text-close="Cancel" button-text-confirm="Confirm" @clicked="checkCompleted" @confirm="checkAnswers"
-             />
+            />
         </form>
     </div>
 </template>
@@ -28,7 +117,10 @@
     import { checkImperatif } from '@/utils/helper';
     import PracticeUnit from '@/components/PracticeUnit.vue';
     import { ref, reactive } from 'vue';
-    import Modal from './Modal.vue';
+    import Modal from './Modals/Modal.vue';
+    import TutorialModal from './Modals/TutorialModal.vue';
+    import IconModal from './Modals/IconModal.vue';
+    import { useStorage } from '@vueuse/core'
 
     const props = defineProps({
         options: Object,
@@ -36,6 +128,8 @@
         conj: Object,
         pronoun: String
     });
+
+    const needTutorial = useStorage('need-tutorial', true);
 
     const modalToggle = ref(false);
     const modalMsg = ref('You haven\'t completed all avialable conjugations. Are you sure you want to submit?');
@@ -238,9 +332,7 @@
                 }
             }
         }
-        console.log("conj:", props.conj);
-        console.log("incorrect:", incorrect);
-        console.log("formData:", formData);
+
         emit('completed', incorrect, formData);
     }
 </script>
