@@ -36,7 +36,7 @@
                         {{ modalBodies[pageIndex] }}
                     </div>
                     <div v-if="pageIndex < modalInputs.length" class="flex items-baseline justify-evenly">
-                        <div class="mr-5">
+                        <div class="mr-5 select-none">
                             {{ modalInputs[pageIndex] }}
                         </div>
                         <form @submit.prevent="handleNext">

@@ -11,7 +11,7 @@
                 v-model="radioPicked1"
             />
         </div>
-        <ul class="ml-2 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[3fr_3fr_3fr_1fr] lg:grid-rows-3 lg:grid-flow-col">
+        <ul class="ml-2 mb-2 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[3fr_3fr_3fr_1fr] lg:grid-rows-3 lg:grid-flow-col">
             <li
                 v-for="(item, i) in radioList2"
                 :key="i"

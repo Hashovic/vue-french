@@ -9,7 +9,7 @@
                 ref="inputRef"
                 spellcheck="false"
                 placeholder="Enter a verb to conjugate"
-                class="border-2 border-gray-300 p-2 rounded w-full"
+                class="border-2 outline-none focus:border-sky-500 dark:focus:border-amber-500 transition-colors duration-100 border-gray-300 p-2 rounded w-full"
                 v-model="search"
                 @focus="hasFocus = true"
                 @blur="hasFocus = false"

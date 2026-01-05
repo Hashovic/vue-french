@@ -177,7 +177,7 @@ export const normalizeVerbInput = (input) => {
 
 export const normalizeAccent = (str) => {
     return str
-        .normalize('NFD')           // split letters + accents
+        ?.normalize('NFD')           // split letters + accents
         .replace(/\p{Diacritic}/gu, '') // remove accents
         .toLowerCase();
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="w-full sm:w-1/2 lg:w-1/3 mb-4">
-        <p>{{ description ?? 'Search:' }}</p>
+        <p v-if="description">{{ description }}</p>
         <form
             @submit.prevent="selectVerb(search)"
         >
@@ -9,7 +9,7 @@
                 ref="inputRef"
                 spellcheck="false"
                 placeholder="Enter a verb to conjugate"
-                class="border-2 border-gray-300 p-2 rounded w-full"
+                :class="customClasses ? customClasses : 'border-2 border-gray-300 p-2 rounded w-full'"
                 v-model="search"
                 @mouseenter="focusInput"
                 @focus="hasFocus = true"
@@ -18,7 +18,7 @@
                 @input="handleInput"
             >
         </form>
-        <ul v-if="hasFocus" class="rounded-lg absolute bg-[#eeeeee] dark:bg-gray-800 w-36 text-md">
+        <ul v-if="hasFocus" class="rounded-lg absolute bg-[#eeeeee] dark:bg-gray-800 w-36" :class="autoTextSize">
             <RouterLink 
                 v-for="(vb, i) in computedList" 
                 class="block"
@@ -40,7 +40,20 @@
     import { useRouter, useRoute } from 'vue-router';
     import { normalizeVerbInput, normalizeAccent, getAutocomplete } from '@/utils/helper.js';
 
-    const props = defineProps({description: String});
+    const props = defineProps({
+        description: {
+            type: String,
+            default: ''
+        },
+        customClasses: {
+            type: String,
+            default: ''
+        },
+        autoTextSize: {
+            type: String,
+            default: 'text-md'
+        }
+    });
     const router = useRouter();
     const route = useRoute();
     const search = ref('');

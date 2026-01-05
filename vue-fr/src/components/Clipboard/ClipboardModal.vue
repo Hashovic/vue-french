@@ -1,7 +1,7 @@
 <template>
     <button
         type="button"
-        class="cursor-pointer rounded transition-colors outline-none disabled:opacity-50 disabled:pointer-events-none"
+        class="cursor-pointer rounded disabled:opacity-50 disabled:pointer-events-none"
         :class="customButtonClasses ? customButtonClasses : 'w-full text-white bg-sky-700 hover:bg-sky-800 dark:bg-amber-500 dark:hover:bg-amber-600 mx-auto my-4 py-2 px-4 font-bold'"
         @click="emit('clicked')"
     >

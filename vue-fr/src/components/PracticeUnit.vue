@@ -1,7 +1,7 @@
 <template>
-    <div class="grid grid-cols-[1fr_3fr] py-1 pl-3 pr-2 items-center rounded-lg border-2 border-gray-300 dark:border-gray-600">
-        <p class="text-lg">{{ label }}</p>
-        <div v-if="!isImperatif" class="grid grid-cols-2 gap-2 items-baseline">
+    <div class="grid md:grid-cols-[1fr_3fr] py-1 pl-3 pr-2 not-md:text-lg items-center rounded-lg border-2 border-gray-300 dark:border-gray-600">
+        <p class="md:text-lg text-xl not-md:my-2">{{ label }}</p>
+        <div v-if="!isImperatif" class="grid md:grid-cols-2 gap-2 items-baseline">
             <div class="relative">
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
                     {{ childPronoun }}
@@ -15,7 +15,7 @@
                 <input type="text" v-model="ans.secondary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
         </div>
-        <div v-else class="grid grid-flow-col grid-rows-3 grid-cols-2 gap-2 items-baseline">
+        <div v-else class="grid grid-flow-col grid-rows-3 md:grid-cols-2 gap-2 items-baseline">
             <div v-for="(_ , impPronoun) in ans.primary" :key="impPronoun" class="flex items-baseline">
                 <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.primary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
                 <span class="text-xl pl-2">{{ans.secondary && Object.hasOwn(ans.secondary, impPronoun) ? ',' : '!'}}</span>

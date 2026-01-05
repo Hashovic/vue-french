@@ -1,5 +1,5 @@
 <template>
-    <div v-if="conj" class="w-5/8 mx-auto">
+    <div v-if="conj" class="lg:w-5/8 mx-auto">
         <div class="flex justify-between">
             <h2 class="text-4xl font-light "><span class="font-medium text-sky-700 dark:text-amber-500">Verb: </span>{{ conj.verb }}</h2>
         </div>
@@ -9,7 +9,7 @@
                 <h3 v-if="options.cl === 1" class="text-xl mr-4"><span class="font-medium">Conjugates Like: </span>{{ conj.conj_like }}</h3>
                 <h3 class="text-xl mr-4"><span class="font-medium">Pronoun: </span><span class="text-sky-700 dark:text-amber-500">{{ pronoun }}</span></h3>
             </div>
-            <IconModal modal-title="Accent Reference (Quick Guide)" >
+            <IconModal v-model="iconModalModel" modal-title="Accent Reference (Quick Guide)" >
                 <div class="">
                     <p class="text-base/7 border-b border-gray-300 dark:border-gray-700 mb-4 pb-4">
                         You can type French accents by typing a
@@ -93,6 +93,8 @@
                         <span class="font-semibold">accented letter</span>
                         </p>
                     </div>
+
+                    <!-- Restart Tutorial -->
                 </div>
             </IconModal>
         </div>
@@ -130,10 +132,11 @@
     });
 
     const needTutorial = useStorage('need-tutorial', true);
-
     const modalToggle = ref(false);
+    const iconModalModel = ref(false);
     const modalMsg = ref('You haven\'t completed all avialable conjugations. Are you sure you want to submit?');
     const emit = defineEmits(['completed']);
+
 
     const checkSecondary = (t) => {
         if(checkImperatif(t)) {

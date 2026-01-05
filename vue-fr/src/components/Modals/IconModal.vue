@@ -43,6 +43,12 @@
                 <!-- Footer -->
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700 shrink-0">
                     <button
+                        class="cursor-pointer py-2 px-3 mr-2 inline-flex items-center gap-x-2 text-sm bg-sky-700 hover:bg-sky-800 dark:bg-amber-500 dark:hover:bg-amber-600 duration-80 transition-colors text-white font-medium rounded-lg border border-transparent"
+                        @click="restartTutorial"
+                    >
+                        Tutorial
+                    </button>
+                    <button
                         type="button"
                         class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white hover:bg-gray-200 duration-80 transition-colors dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700"
                         @click="isOpen = false"
@@ -58,10 +64,12 @@
 <script setup>
     import { ref, watch, nextTick } from 'vue';
     import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+    import { useStorage } from '@vueuse/core';
 
     const modalRef = ref(null);
     const emit = defineEmits(['confirm', 'clicked']);
     const isOpen = defineModel({default: false});
+    const needTutorial = useStorage('need-tutorial', true);
 
     defineProps({
         // Title for modal
@@ -69,17 +77,18 @@
             type: String,
             default: 'Modal Title'
         },
-        // Content for modal
-        modalBody: {
-            type: String,
-            default: 'This is the modal body content.'
-        },
         // Text for closing button in modal
         buttonTextClose: {
             type: String,
             default: 'Close'
         },
     })
+
+    function restartTutorial() {
+        isOpen.value = false;
+        needTutorial.value = true;
+    }
+
 
     // Focus trap deatils
     const { activate, deactivate } = useFocusTrap(modalRef, {

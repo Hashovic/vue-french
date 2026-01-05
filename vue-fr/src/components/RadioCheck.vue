@@ -1,6 +1,6 @@
 <template>
     <div class="rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600/10">
-        <div class="grid grid-cols-4 grid-rows-4 grid-flow-col">
+        <div class="grid sm:grid-cols-4 grid-rows-4 grid-flow-col">
             <Radio 
                 v-for="(item, i) in radioList"
                 :key="i"
@@ -11,7 +11,7 @@
                 v-model="radioPicked"
             />
         </div>
-        <ul class="ml-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-rows-5 lg:grid-flow-col">
+        <ul class="ml-4 mr-2 my-2 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-rows-5 lg:grid-flow-col">
             <li
                 v-for="(item, i) in checkList"
                 :key="i"
