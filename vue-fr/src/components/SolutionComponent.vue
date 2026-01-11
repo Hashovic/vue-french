@@ -15,9 +15,14 @@
                 <div>
                     {{ totalCount - incorrectCount }} / {{ totalCount }}
                 </div>
-                <p v-if="percentage === 100" class="italic text-base">perfect score!</p>
-                <p v-else-if="percentage > 80" class="italic text-base">wow that's pretty good</p>
-                <p v-else-if="percentage > 0" class="italic text-base">keep up the good work!</p>
+                <div class="italic text-base">
+                    <p v-if="percentage === 100">perfect score!</p>
+                    <p v-else-if="percentage >= 80">wow that's pretty good</p>
+                    <p v-else-if="percentage >= 60">keep practicing, you got this!</p>
+                    <p v-else-if="percentage >= 40">progress is progress, keep it up!</p>
+                    <p v-else-if="percentage > 0">hey, at least it’s not zero</p>
+                    <p v-else>you can only get better from here :&rpar;</p>
+                </div>
             </div>
             <div>
                 <SolutionUnit v-for="(ans, tense) in formData" :key="tense" @inc-incorrect="addIncorrect" @inc-total="addTotal" :conj="conj" :tense="tense" :answer="ans" :incorrect="incorrect" />

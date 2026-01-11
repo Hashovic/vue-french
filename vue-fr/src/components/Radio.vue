@@ -10,6 +10,7 @@
                 type="radio" class="peer h-5 w-5 shadow hover:shadow-md cursor-pointer appearance-none rounded-full border dark:border-gray-200 dark:checked:border-gray-100 border-slate-300 checked:border-slate-400"
                 @click="$emit('setActive', label)"
                 :value="radioLabel"
+                autocomplete="off"
                 :disabled="isDisabled"
                 v-model="picked"
             >

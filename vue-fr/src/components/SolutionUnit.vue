@@ -2,8 +2,8 @@
     <div class="text-lg mb-2">{{ label }}</div>
     <div>
        <div v-if="!isImperatif">
-            <div v-if="!hasSecondary" class="grid grid-cols-2 gap-4">
-               <div class="border-2 rounded-lg p-2 mb-2"
+            <div v-if="!hasSecondary" class="grid lg:grid-cols-2 gap-4">
+                <div class="border-2 rounded-lg p-2 mb-2"
                     :class="primaryIncorrect ? 'border-red-500 dark:border-red-500 hover:bg-red-200/40 dark:hover:bg-red-600/15'
                     : 'border-green-500 dark:border-green-600 hover:bg-green-500/10 hover:dark:bg-green-600/15'"
                 >

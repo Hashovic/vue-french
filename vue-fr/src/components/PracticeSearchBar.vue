@@ -6,8 +6,10 @@
         >
             <input
                 type="text"
+                name="practice-search-input"
                 ref="inputRef"
                 spellcheck="false"
+                autocomplete="off"
                 placeholder="Enter a verb to conjugate"
                 class="border-2 outline-none focus:border-sky-500 dark:focus:border-amber-500 transition-colors duration-100 border-gray-300 p-2 rounded w-full"
                 v-model="search"
@@ -94,6 +96,7 @@
         highlightIndex.value = -1;
         currentInput.value = search.value;
         hasFocus.value = true;
+        model.value = search.value;
     }
 
     // When the highlightIndex changes, search.value updates to the current highlightedIndex

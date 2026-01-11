@@ -11,7 +11,7 @@
         aria-labelledby="modal-label"
     >
     <!-- Modal wrapper -->
-        <div class="w-full sm:max-w-lg mx-3 sm:mx-auto mt-4">
+        <div class="sm:w-full sm:max-w-lg mx-4 sm:mx-auto mt-4">
             <div
                 class="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-2xs rounded-xl pointer-events-auto transition-all duration-300 flex flex-col max-h-[60vh]"
             >

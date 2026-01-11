@@ -6,24 +6,24 @@
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
                     {{ childPronoun }}
                 </span>
-                <input type="text" @input="e => handleInput(e, val => ans.primary = val)" v-model="ans.primary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
+                <input type="text" @input="e => handleInput(e, val => ans.primary = val)" v-model="ans.primary" autocomplete="off" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
             <div v-if="hasSecondary" class="relative">
                 <span class="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none select-none">
                     {{ childPronoun }}
                 </span>
-                <input type="text" v-model="ans.secondary" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
+                <input type="text" v-model="ans.secondary" autocomplete="off" spellcheck="false" class="border-1 p-2 pl-12 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
             </div>
         </div>
         <div v-else class="grid grid-flow-col grid-rows-3 md:grid-cols-2 gap-2 items-baseline">
             <div v-for="(_ , impPronoun) in ans.primary" :key="impPronoun" class="flex items-baseline">
-                <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.primary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
+                <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.primary[impPronoun]" autocomplete="off" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" />
                 <span class="text-xl pl-2">{{ans.secondary && Object.hasOwn(ans.secondary, impPronoun) ? ',' : '!'}}</span>
             </div>
             
             <div v-if="hasSecondary" v-for="(_ , impPronoun) in ans.primary" :key="impPronoun">
                 <div v-if="ans.secondary[impPronoun] !== undefined" class="flex items-baseline">
-                    <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.secondary[impPronoun]" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" /><span class="text-xl pl-2">!</span>
+                    <input type="text" :placeholder="`(${impPronoun})`" v-model="ans.secondary[impPronoun]" autocomplete="off" spellcheck="false" class="border-1 p-2 w-full border-gray-500/60 dark:border-gray-400/80 rounded" /><span class="text-xl pl-2">!</span>
                 </div>
                 <div v-else></div>
             </div>

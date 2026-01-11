@@ -6,8 +6,10 @@
         >
             <input
                 type="text"
+                name="searchbar"
                 ref="inputRef"
                 spellcheck="false"
+                autocomplete="off"
                 placeholder="Enter a verb to conjugate"
                 :class="customClasses ? customClasses : 'border-2 border-gray-300 p-2 rounded w-full'"
                 v-model="search"

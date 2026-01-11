@@ -105,8 +105,9 @@
                 :ans="ans"
                 :has-secondary="checkSecondary(tense) ? true : false"
                 :pronoun="pronoun"
+                name="tense"
             />
-            <TutorialModal v-model="needTutorial" />
+            <TutorialModal v-model="needTutorial" name="tutorial-modal" />
             <Modal v-model="modalToggle" button-text="Submit Answers" modal-title="Confirmation"
                 :modal-body="modalMsg"
                 button-text-close="Cancel" button-text-confirm="Confirm" @clicked="checkCompleted" @confirm="checkAnswers"

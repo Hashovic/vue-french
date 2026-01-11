@@ -1,8 +1,8 @@
 <template>
     <div>
         <form id="practice-form" @submit.prevent="submitForm(0)">
-            <PracticeSearchBar v-model="chosenVerb" />
-            <div class="isolate flex flex-col md:flex-row justify-between w-full lg:w-7/8 appearance-none">
+            <PracticeSearchBar name="practice-search-bar" v-model="chosenVerb" />
+            <div class="isolate flex flex-col md:flex-row justify-between w-full lg:w-7/8 appearance-none" name="checkbox-container">
                 <Checkbox
                     v-for="(item, i) in defaultsCheckList"
                     :key="i"
@@ -11,7 +11,7 @@
                     v-model="chosenDefaultsCheckList"
                 />
             </div>
-            <div class="flex flex-col lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,5fr)] gap-2 gap-y-4 mb-4">
+            <div class="flex flex-col lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,5fr)] gap-2 gap-y-4 mb-4" name="input-container">
                 <div class="col-start-1 col-end-2 row-start-1 row-end-2 isolate">
                     <h3 class="text-lg mb-1">Pronoun(s):</h3>
                     <RadioRadio
@@ -46,7 +46,7 @@
                     />
                 </div>
             </div>
-            <div class="flex mt-10 md:mt-4 justify-center md:justify-end">
+            <div class="flex mt-10 md:mt-4 justify-center md:justify-end" name="clear-selections">
                 <Modal v-model="modalToggle" button-text="Clear Selections" modal-title="Confirmation"
                     :modal-body="'Are you sure you want to clear your current selections? All selected options will be lost.'"
                     button-text-close="Cancel" button-text-confirm="Confirm" @clicked="modalToggle = true" @confirm="clearSelections"
@@ -157,4 +157,4 @@ const submitForm = (isShare=0) => {
     }
 };
 
-</script>1
+</script>

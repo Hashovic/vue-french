@@ -24,10 +24,16 @@
             :to="{name: 'practice-home'}"
         >Practice</RouterLink> 
     </div>
-    <div>
-        <h2 class="text-center text-2xl">Bienvenue!</h2>
-        <p>
-            Bonjour &agrave; tous! 
+    <div class="border-2 rounded-xl font-mono border-gray-500/70 max-w-2xl p-4 mx-auto">
+        <h2 class="text-center text-2xl mb-4">Bienvenue!</h2>
+        <p class="text-base/8">
+            Bonjour &agrave; tous! Welcome to this site! If you're looking for a
+            conjugation head to the conjugation page and if you want to test your 
+            knowledge, head over to the practice page. I've added the most used verbs
+            out of the 5000 most common french words &lpar;around 1100 verbs&rpar; so
+            this should cover most conjugations. This site is far from perfect
+            so if you notice an issue or want me to add a conjugation, just let me know
+            on the help page.
         </p>
     </div>
 </template>
