@@ -2,8 +2,8 @@
     <nav class="fixed top-0 left-0 z-20 w-full bg-gray-200/95 dark:bg-[#181818]/80 justify-start sm:justify-center rounded-3xl shadow-md shadow-gray-300 dark:shadow-white/[0.08]">
         <div class="flex justify-between py-2 items-center dark:text-gray-200">
             <div class="w-1/3 flex items-center"></div>
-            <div class="w-1/3 flex justify-center items-center">
-                <RouterLink class="pr-2" to="/">
+            <div ref="dropdownRef" class="w-1/3 flex justify-center items-center">
+                <RouterLink class="hidden sm:block pr-2" to="/">
                     <svg class="size-10 text-sky-700 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
                         <path d="M11 7L8 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M16 7L13 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -12,6 +12,15 @@
                         <path d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z" stroke="currentColor" stroke-width="1.5"/>
                     </svg>
                 </RouterLink>
+		<div @click="hasFocus = !hasFocus" class="sm:hidden pr-2">
+                    <svg class="size-10 text-sky-700 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M11 7L8 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 7L13 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 14H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+		</div>
                 <ul class="hidden sm:flex flex-col sm:flex-row dark:text-gray-100">
                     <li>
                         <RouterLink to="/" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Home</RouterLink>
@@ -24,6 +33,20 @@
                     </li>
                     <li>
                         <RouterLink to="/help" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Help</RouterLink>
+                    </li>
+                </ul>
+                <ul v-if="hasFocus" @click="hasFocus = false" class="rounded-2xl flex flex-col gap-y-3 p-2 absolute top-15 bg-[#eeeeee] dark:bg-gray-800 w-full dark:text-gray-100 sm:hidden">
+                    <li>
+                        <RouterLink to="/" class="text-3xl px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Home</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/conjugation" class="text-3xl px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Conjugation</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/practice" class="text-3xl px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Practice</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/help" class="text-3xl px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Help</RouterLink>
                     </li>
                 </ul>
             </div>
@@ -43,9 +66,30 @@
     </nav>
 </template>
 <script setup>
-import { useDark, useToggle } from '@vueuse/core';
+    import { useDark, useToggle } from '@vueuse/core';
+    import { ref, onMounted, onBeforeUnmount } from 'vue';
 
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
+
+    const hasFocus = ref(false);
+    const dropdownRef = ref(null);
+
+    function handleClickOutside(e) {
+	if (
+	    dropdownRef.value &&
+	    !dropdownRef.value.contains(e.target)
+	) {
+	    hasFocus.value = false;
+	}
+    }
+
+    onMounted(() => {
+	document.addEventListener('click', handleClickOutside);
+    });
+
+    onBeforeUnmount(() => {
+	document.removeEventListener('click', handleClickOutside);
+    });
 
 </script>
