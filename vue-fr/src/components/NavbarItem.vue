@@ -22,6 +22,9 @@
                     <li>
                         <RouterLink to="/practice" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Practice</RouterLink>
                     </li>
+                    <li>
+                        <RouterLink to="/help" class="text-[16px] px-3 hover:text-amber-500 dark:hover:text-fuchsia-600">Help</RouterLink>
+                    </li>
                 </ul>
             </div>
             <div class="w-1/3 flex justify-end items-center pr-8">
@@ -40,7 +43,7 @@
     </nav>
 </template>
 <script setup>
-    import { useDark, useToggle } from '@vueuse/core';
+import { useDark, useToggle } from '@vueuse/core';
 
     const isDark = useDark();
     const toggleDark = useToggle(isDark);

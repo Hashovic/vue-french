@@ -195,3 +195,26 @@ export async function getAutocomplete(searchTerm) {
         return [];
     }
 }
+
+
+// Adds issue to database
+export async function addIssue(typeRef, descRef) {
+    if (!typeRef.value || !descRef.value) return
+
+    const res = await fetch(`http://localhost:8080/api/issues/add`, {
+	method: "POST",
+	headers: { "Content-Type": "application/json" },
+	body: JSON.stringify({
+	    type: typeRef.value,
+	    description: descRef.value,
+	}),
+    });
+
+    if (!res.ok) {
+	console.log("failed to submit issue");
+	return;
+    }
+
+    typeRef.value = "";
+    descRef.value = "";
+}
