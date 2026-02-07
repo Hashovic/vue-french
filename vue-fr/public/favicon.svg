@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+
+  <style>
+    path { stroke: #000000; } /* light mode */
+
+    @media (prefers-color-scheme: dark) {
+      path { stroke: #ffffff; } /* dark mode amber */
+    }
+  </style>
+
+  <g stroke-width="2.5" stroke-linecap="round" fill="none">
+    <path d="M10 3L6 21"/>
+    <path d="M20.5 16H2.5"/>
+    <path d="M22 7H4"/>
+    <path d="M18 3L14 21"/>
+  </g>
+
+</svg>
