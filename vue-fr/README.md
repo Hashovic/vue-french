@@ -96,6 +96,33 @@ All the invidual parts of `SolutionComponent.vue`. It functions analagous to `Pr
 
 The message that appears if the verb that was searched was not in the database.
 
+## router
+
+This directory simply stores the index.js file that is used for all the routing in the site. For example, going to the `/` route takes you home and going to
+the `/practice` route takes you to practice. All that logic is stored here
+
+## stores
+
+Contains some preferences used throughout the site in local storage. The getters and setters were placed here to conveniently access them anywhere else in the site.
+
+## utils
+
+Contains some files used for reused js throughout the site
+
+### helpers.js
+
+This has all the functions that are either used multiple times or are simply too clunky to be in the `script setup` part of the template.
+
+### tenseLists.js
+
+This has all the tense lists in a conveniently accessible place with all the different tenses and orderings based on the chosen tense option (ie. all tenses, all but rare tenses, etc.)
+
+## views
+
+This directory contains all the .vue files that are dependent on the route. Whenever the route changes, a new "view" is chosen. So the same app exists but with a different view for the main
+content of the site. (This is more clearly seen in the `App.vue` file)
+
+
 
 
 
