@@ -120,11 +120,15 @@ This has all the tense lists in a conveniently accessible place with all the dif
 ## views
 
 This directory contains all the .vue files that are dependent on the route. Whenever the route changes, a new "view" is chosen. So the same app exists but with a different view for the main
-content of the site. (This is more clearly seen in the `App.vue` file)
+content of the site. (This is more clearly seen in the `App.vue` file). Most of the views are named in a straightforward way so I won't go into their functionality in detail.
 
+## App.vue
 
+This is the main vue file that deals with how everything is rendered in the site. There is a `RouterView` element that controls which `view` appears in that slot which is controlled by the `index.js` file in the `router` directory.
 
+## main.js
 
+This just creates and mounts the `App.vue` file
 
 
 
