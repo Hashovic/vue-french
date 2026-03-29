@@ -182,10 +182,12 @@ export const normalizeAccent = (str) => {
         .toLowerCase();
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 // Get the autocompleted verbs from the server
 export async function getAutocomplete(searchTerm) {
     try{
-        const res = await fetch(`http://localhost:8080/api/autocomplete/${searchTerm}`);
+        const res = await fetch(`${API_BASE}/api/autocomplete/${searchTerm}`);
 
         if (!res.ok) return [];
 
@@ -201,7 +203,7 @@ export async function getAutocomplete(searchTerm) {
 export async function addIssue(typeRef, descRef) {
     if (!typeRef.value || !descRef.value) return
 
-    const res = await fetch(`http://localhost:8080/api/issues/add`, {
+    const res = await fetch(`${API_BASE}/api/issues/add`, {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
 	body: JSON.stringify({

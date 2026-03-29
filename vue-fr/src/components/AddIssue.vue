@@ -2,7 +2,7 @@
     <form
 	@submit.prevent="validateIssue"
 	name="issueForm"
-	class="w-full flex gap-x-4"
+	class="w-full flex flex-col md:flex-row not-md:gap-y-4 gap-x-4"
     >
 	<select
 	    v-model="issueTypeInput" 

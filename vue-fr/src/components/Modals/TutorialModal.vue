@@ -42,7 +42,7 @@
                         <form @submit.prevent="handleNext">
                             <input 
                                 class="w-full appearance-none p-2 bg-transparent outline-0 rounded-lg border-2 border-gray-300 dark:border-gray-600"
-                                :class="{'border-red-500': incorrect}"
+                                :class="{'border-red-500 dark:border-red-500': incorrect}"
                                 :placeholder="incorrect ? 'Try again.' : 'Try it!'"
                                 @input="e => handleInput(e, val => inputModel = val)"
                                 v-model="inputModel"

@@ -67,6 +67,7 @@
   import SearchBar from '@/components/ConjSearchBar.vue';
   import { tenses, rareTenses, secondaryEquivalents } from '@/utils/tenseLists.js';
   import { chosenVerb, chosenDefaultsCheckList } from '@/stores/preferences';
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   const props = defineProps({
     verbIn: String,
@@ -87,7 +88,7 @@
   async function fetchConjugation(v, fp) {
     let data = [];
     try {
-      const url = `http://localhost:8080/api/all/${v}?fp=${fp}`;
+      const url = `${API_BASE}/api/all/${v}?fp=${fp}`;
       const res = await fetch(url);
       const resData = await res.json();
       if (!resData.ok) {

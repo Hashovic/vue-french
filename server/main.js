@@ -9,7 +9,12 @@ import {addIssue, viewAllIssues, viewUnsolvedIssues, makeSolved, removeIssue} fr
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(cors({
+    origin: [
+	'https://hashconj.com',
+	'https://www.hashconj.com'
+    ]
+}));
 app.use(express.json());
 
 // ------ Rate Limiter ------

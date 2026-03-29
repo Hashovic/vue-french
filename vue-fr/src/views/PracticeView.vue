@@ -15,6 +15,7 @@
     import SolutionComponent from '@/components/SolutionComponent.vue';
     import VerbNotFound from '@/components/VerbNotFound.vue';
     import ServerDown from '@/components/ServerDown.vue';
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
     const props = defineProps({
         verbIn: String,
@@ -66,7 +67,7 @@
 
     async function fetchConjugation(v, formId, fp, vs, fm) {
         try {
-            const url = `http://localhost:8080/api/single/${v}/${formId}?fp=${fp}&vp=${Number(vs) ? 0 : 1}&fm=${fm}`;
+	    const url = `${API_BASE}/api/single/${v}/${formId}?fp=${fp}&vp=${Number(vs) ? 0 : 1}&fm=${fm}`;
             const res = await fetch(url);
             const resData = await res.json();       
             if (!resData.ok) {

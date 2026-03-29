@@ -25,13 +25,12 @@
 	    Login
 	</button>
     </div>
-    <AdminComponent v-else :token="token" :api-route="API" />
+    <AdminComponent v-else :token="token" :api-route="API_BASE" />
 </template>
 <script setup>
     import { ref } from 'vue';
     import AdminComponent from '@/components/AdminComponent.vue';
-
-    const API = "http://localhost:8080";
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
     const adminPass = ref("");
     const incorrectPass = ref(false);
@@ -40,7 +39,7 @@
 
     // Admin login api - returns token if password is correct
     async function adminLogin() {
-	const res = await fetch(`${API}/api/admin/login`, {
+	const res = await fetch(`${API_BASE}/api/admin/login`, {
 	    method: "POST",
 	    headers: { "Content-Type": "application/json" },
 	    body: JSON.stringify({ password: adminPass.value }),
