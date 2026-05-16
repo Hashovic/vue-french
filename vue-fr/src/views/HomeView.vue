@@ -57,11 +57,10 @@
                 class="text-sky-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600"
                 target="_blank"
                 title="Go to github page"
-                href="https://github.com"
+                href="https://github.com/Hashovic/vue-french"
                 >github page</a
             >
             for this site if you want to know how this was made!
-            &lpar;https://github.com&rpar;
         </p>
     </div>
 </template>

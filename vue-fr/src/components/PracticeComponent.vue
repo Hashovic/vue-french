@@ -245,7 +245,7 @@
                         let primaryIncorrect = true;
                         let switched = false;
                         const primaryAns = formData[tense].primary[impPronoun].trim();
-                        const secondaryAns = formData[tense].secondary[impPronoun].trim();
+                        const secondaryAns = formData[tense].secondary[impPronoun]?.trim();
                         const primaryCorrect = props.conj[imperatifEquivalents[tense][impPronoun]]
 
                         if(primaryCorrect === primaryAns){

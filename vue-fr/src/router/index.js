@@ -59,7 +59,6 @@ const router = createRouter({
             name: "share",
             beforeEnter(to) {
                 const decoded = decode(to.params.options);
-                console.log(decoded);
                 const temp = [];
                 if (Object.hasOwn(decoded, "fm") && decoded.fm === 1)
                     temp.push("fm");
@@ -67,6 +66,8 @@ const router = createRouter({
                     temp.push("fp");
                 if (Object.hasOwn(decoded, "vs") && decoded.vs === 1)
                     temp.push("vs");
+                if (Object.hasOwn(decoded, "cl") && decoded.cl === 1)
+                    temp.push("cl");
                 chosenDefaultsCheckList.value = temp;
 
                 chosenPronounRadio1.value = Object.hasOwn(decoded, "prRad1")

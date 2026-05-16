@@ -10,10 +10,10 @@
         <div class="mr-4">
           <RouterLink v-if="conjugations.length > 0 && reflexivity_ref" :to="{name: 'conjugation', params: {verb: props.verbIn}, query: {fp: (props.forcePronomial == 0 ? 1 : 0)}}">
             <h3 class="text-lg dark:hover:text-fuchsia-600 hover:text-amber-500">
-              <span class="font-medium">Pronomial</span>
+		<span class="font-medium">{{ pronomialString }}</span>
             </h3>
           </RouterLink>
-          <h3 v-else class="text-lg text-gray-300 dark:text-gray-600"><span class="font-medium">Pronomial</span></h3>     
+	  <h3 v-else class="text-lg text-gray-300 dark:text-gray-600"><span class="font-medium">{{ pronomialString }}</span></h3>     
         </div>
         <div class="mr-4">
           <RouterLink v-if="conjugations.length > 0" v-slot="{ navigate }" :to="{name: 'practice-home'}">
@@ -84,6 +84,7 @@
   const past_participle_ref = ref('');
   const reflexivity_ref = ref('');
   const conjugations = ref([]);
+  const pronomialString = ref('');
 
   async function fetchConjugation(v, fp) {
     let data = [];
@@ -120,6 +121,7 @@
 
   onMounted(() => {
     fetchConjugation(props.verbIn, props.forcePronomial);
+    pronomialString.value = props.forcePronomial != '0' ? 'Non-Pronomial': 'Pronomial';
   });
   
   watch(() => props.verbIn,
@@ -131,6 +133,7 @@
   watch(() => props.forcePronomial,
     (newFp) => {
       fetchConjugation(props.verbIn, newFp);
+      pronomialString.value = newFp != '0' ? 'Non-Pronomial': 'Pronomial';
     }
   );
 </script>
