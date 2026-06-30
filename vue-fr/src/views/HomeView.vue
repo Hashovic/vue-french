@@ -43,13 +43,23 @@
     >
         <h2 class="text-center text-2xl mb-4">Bienvenue!</h2>
         <p class="text-base/8">
-            Bonjour &agrave; tous! Welcome to this site! If you're looking for a
-            conjugation head to the conjugation page and if you want to test
-            your knowledge, head over to the practice page. I've added the most
+            Bonjour &agrave; tous! Welcome to this french conjugation site! If you're looking for a
+            french conjugation, head to the
+            <RouterLink class="text-sky-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" :to="{ name: 'conjugation-home' }" >
+                conjugation page
+            </RouterLink> and if you want to test
+            your knowledge, head over to the
+            <RouterLink
+                class="text-sky-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" :to="{ name: 'practice-home' }" >
+                practice page.
+            </RouterLink> I've added the most
             used verbs out of the 5000 most common french words &lpar;around
             1100 verbs in total&rpar; so this should cover most conjugations.
             This site is far from perfect so if you notice an issue or want me
-            to add a conjugation, just let me know on the help page. 
+            to add a conjugation, just let me know on the
+            <RouterLink class="text-sky-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-fuchsia-600" :to="{ name: 'help-home' }" >
+                help page.
+            </RouterLink> 
 	    <br>
 	    <br>
 	    Feel free to check out the README.md file on the
