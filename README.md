@@ -38,11 +38,11 @@ Here is the schema for how I'm storing conjugation data in the database:
 
 Without going too in depth, I'll try to explain how everything works together.
 
-The starting point of this schema would be the `infinitive` table. It stores the actual verb, the translation and other verb specific information. It also stores a `group_id` *(except in the case of very irregular verbs)* which is a foreign key referencing the primary key of the `verbgroup` table, the center point of the schema.
+The starting point of this schema would be the `infinitive` table. It stores the actual verb, the translation and other verb specific information. It also stores a `group_id` *(except in the case of very irregular verbs)* which is a foreign key referencing the primary key of the `verbgroup` table.
 
 The `verbgroup` table stores all the unique patterns for all the verbs with mostly regular conjugations. By patterns I mean the number of letters to remove and what letters to add. 
 
-The `psimple`, `pastparticiple` and `future` tables are essentially tables to simplify the `verbgroup` table and prevent unnecessary redundancy by putting the number of characters to remove and what characters to add inside of tables for those specific tenses and simply adding a reference to one of those tables inside of `verbgroup`. These three tenses also have a very standard ending pattern. For example, the 'future simple' always has the same ending for every verb (eg. -ai for first-person singular, -as for second-person singular, ...). So what is being stored is only how to arrive at the base form of that conjugation. This consistency of the ending is not the case for the present tense though.
+The `psimple`, `pastparticiple` and `future` tables are essentially tables to simplify the `verbgroup` table and prevent unnecessary redundancy by putting the number of characters to remove and what characters to add inside of tables for those specific tenses and simply adding a reference to one of those tables inside of `verbgroup`. These three tenses also have a very standard ending pattern. For example, the 'futur simple' always has the same ending for every verb (eg. -ai for first-person singular, -as for second-person singular, ...). So what is being stored is only how to arrive at the base form of that conjugation. This consistency of the ending is not the case for the present tense though.
 
 The `pattern` table stores all the present tense conjugations. For almost every verb, it stores 6 versions, one for every pronoun, and references the `group_id` of the `verbgroup` table.
 
