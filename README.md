@@ -1,4 +1,4 @@
-# Vue-French
+# Hash Conj
 
 Here will be provided most of the documentation for the hashconj.com website.
 The project is organized into `vue-fr` and `server` to separate the frontend
